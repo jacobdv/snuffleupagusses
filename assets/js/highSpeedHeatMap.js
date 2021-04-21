@@ -12,3 +12,19 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   accessToken: API_KEY
 }).addTo(myMap);
 
+
+const link = 'data/internet2020.geojson';
+
+d3.json(link).then(data => {
+  const quakes = data.features;
+  const markers = L.markerClusterGroup();
+
+  quakes.forEach(eq => {
+    if (eq.geometry.coordinates) {
+      markers.addLayer(L.marker([eq.geometry.coordinates[1], eq.geometry.coordinates[0]]))
+        .bindPopup('Text');
+    }
+    myMap.addLayer(markers);
+  });
+
+});
