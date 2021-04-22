@@ -19,3 +19,6 @@
 - Heat Map
 - Map with Layers
 - Interactive Scatterplot (Internet Speed on y, other variables on x) (Dropdown for state)
+
+### Instructions to Run Snuffleupagusses API Flask App
+- Create a conda environment using the requirements.txt file provided in the repo.
