@@ -14,7 +14,9 @@ L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 
 const link = 'data/internet2020.geojson';
+// Call in flask route here for each visual
 
+// Call to pull from MongoDB and grab columns needed for each visualization
 d3.json(link).then(data => {
   const quakes = data.features;
   const markers = L.markerClusterGroup();
