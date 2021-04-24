@@ -19,7 +19,8 @@ const darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}
 });
 // Layers
 const layers = {
-  HighSpeedAccess: new L.LayerGroup()
+  HighSpeedAccess: new L.LayerGroup(),
+  MedianIncome: new L.LayerGroup()
 };
 // Map
 const myMap = L.map('map', {
@@ -27,6 +28,7 @@ const myMap = L.map('map', {
   zoom: 4,
   layers: [
     layers.HighSpeedAccess
+    // layers.MedianIncome
   ]
 });
 
@@ -38,6 +40,7 @@ const maps = {
 };
 const overlays = {
   'High Speed Access': layers.HighSpeedAccess
+  // 'Median Income': layers.MedianIncome
 };
 
 L.control.layers(maps, overlays).addTo(myMap);
@@ -65,30 +68,30 @@ function markerColor(population) {
   console.log(population)
   switch (true) {
     case population > 1000000 : return ('#084081');
-    case population > 750000 : return ('0868ac');
-    case population > 500000 : return ('2b8cbe');
-    case population > 250000 : return ('4eb3d3');
-    case population > 100000 : return ('7bccc4');
-    case population > 75000 : return ('a8ddb5');
-    case population > 50000 : return ('ccebc5');
-    case population > 25000 : return ('e0f3db');
-    case population > 10000 : return ('f7fcf0');
+    case population > 750000 : return ('#0868ac');
+    case population > 500000 : return ('#2b8cbe');
+    case population > 250000 : return ('#4eb3d3');
+    case population > 100000 : return ('#7bccc4');
+    case population > 75000 : return ('#a8ddb5');
+    case population > 50000 : return ('#ccebc5');
+    case population > 25000 : return ('#e0f3db');
+    case population > 10000 : return ('#f7fcf0');
     // Default would indicate an above ground earthquake.
-    default : return ('ffffff');
+    default : return ('#000000');
 }
 };
 
-d3.csv('data/placeholder.csv').then(city => {
+d3.csv('data/internet_census_combined.csv').then(city => {
     city.forEach(c => {
         let cityObject = {
             'type':'Feature',
             'properties': {
-                'name': c.name,
-                'highSpeed': c.highSpeed
+                'name': c.City,
+                'highSpeed': c.Latitude
             },
             'geometry': {
                 'type': 'Point',
-                'coordinates': [c.lat, c.lng]
+                'coordinates': [c.Latitude, c.Longitude]
             }
         };
         citiesGeoJSON.features.push(cityObject);
