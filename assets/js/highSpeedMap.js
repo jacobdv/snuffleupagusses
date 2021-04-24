@@ -81,56 +81,57 @@ function markerColor(population) {
 }
 };
 
-d3.csv('data/internet_census_combined.csv').then(city => {
-    city.forEach(c => {
-        let cityObject = {
-            'type':'Feature',
-            'properties': {
-                'name': c.City,
-                'highSpeed': c.Latitude
-            },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [c.Latitude, c.Longitude]
-            }
-        };
-        citiesGeoJSON.features.push(cityObject);
-    })
-    console.log(citiesGeoJSON.features)
-    for (let i = 0; i < citiesGeoJSON.features.length; i++) {
-      // City information.
-      let city = citiesGeoJSON.features[i];
-      let coords = city.geometry.coordinates;
-      let popWithAccess = city.properties.highSpeed;
-      // New city marker.
-      const newCity = L.circle(coords, {
-        fillOpacity: 0.75,
-        color: 'black',
-        weight: 0.5,
-        fillColor: markerColor(popWithAccess),
-        radius: markerRadius(popWithAccess)
-      });
-      // City addition to map and binding popup with name and population.
-      newCity.addTo(layers.HighSpeedAccess);
-      newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
-    };
-});
-
-// // MongoDB Part
-// const link = 'f'; // MongoDB route name for endpoint.
-
-// d3.json(link).then(data => {
-//   city.forEach(c => {
-//     let cityObject = {
-//         'type':'Feature',
-//         'properties': {
-//             'name': c.name,
-//             'highSpeed': c.highSpeed
-//         },
-//         'geometry': {
-//             'type': 'Point',
-//             'coordinates': [c.lat, c.lng]
-//         }
+// d3.csv('data/internet_census_combined.csv').then(city => {
+//     city.forEach(c => {
+//         let cityObject = {
+//             'type':'Feature',
+//             'properties': {
+//                 'name': c.City,
+//                 'highSpeed': c.Latitude
+//             },
+//             'geometry': {
+//                 'type': 'Point',
+//                 'coordinates': [c.Latitude, c.Longitude]
+//             }
+//         };
+//         citiesGeoJSON.features.push(cityObject);
+//     })
+//     console.log(citiesGeoJSON.features)
+//     for (let i = 0; i < citiesGeoJSON.features.length; i++) {
+//       // City information.
+//       let city = citiesGeoJSON.features[i];
+//       let coords = city.geometry.coordinates;
+//       let popWithAccess = city.properties.highSpeed;
+//       // New city marker.
+//       const newCity = L.circle(coords, {
+//         fillOpacity: 0.75,
+//         color: 'black',
+//         weight: 0.5,
+//         fillColor: markerColor(popWithAccess),
+//         radius: markerRadius(popWithAccess)
+//       });
+//       // City addition to map and binding popup with name and population.
+//       newCity.addTo(layers.HighSpeedAccess);
+//       newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
 //     };
-//   });
 // });
+
+// MongoDB Part
+const link = 'data/internet_census_combined.json'; // MongoDB route name for endpoint.
+
+d3.json(link).then(data => {
+  console.log(data)
+  // city.forEach(c => {
+  //   let cityObject = {
+  //       'type':'Feature',
+  //       'properties': {
+  //           'name': c.name,
+  //           'highSpeed': c.highSpeed
+  //       },
+  //       'geometry': {
+  //           'type': 'Point',
+  //           'coordinates': [c.lat, c.lng]
+  //       }
+  //   };
+  // });
+});
