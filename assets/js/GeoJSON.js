@@ -16,5 +16,6 @@ d3.csv('data/placeholder.csv').then(city => {
         citiesGeoJSON.push(cityObject);
     })
     const outputGeoJSON = JSON.stringify(citiesGeoJSON);
+    console.log(outputGeoJSON)
 });
 
