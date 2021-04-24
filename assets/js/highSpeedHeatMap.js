@@ -50,19 +50,18 @@ info.onAdd = function() {
 };
 info.addTo(myMap);
 
-const link = 'data/placeholder.csv'; // MongoDB endpoint. Route name.
-
 // Creating GeoJSON data.
 const citiesGeoJSON = {
   'type': 'FeatureCollection',
   'features': []
 };
 
-// MongoDB Part
-// d3.json(link).then(data => {
-// });
+// Function for marker radius.
+function markerRadius(population) {
+  return (Math.sqrt(population) * 100)
+};
 
-d3.csv(link).then(city => {
+d3.csv('data/placeholder.csv').then(city => {
     city.forEach(c => {
         let cityObject = {
             'type':'Feature',
@@ -82,12 +81,31 @@ d3.csv(link).then(city => {
       let coords = citiesGeoJSON.features[i].geometry.coordinates;
       console.log(coords)
       const newCity = L.circle(coords, {
-        fillOpacity: 1,
-        color: 'white',
+        fillOpacity: 0.75,
+        color: 'black',
         weight: 0.5,
-        fillColor: 'yellow',
-        radius: 100000
+        fillColor: 'gold',
+        radius: markerRadius(citiesGeoJSON.features[i].properties.highSpeed)
       });
       newCity.addTo(layers.HighSpeedAccess);
     };
+});
+
+// MongoDB Part
+const link = 'f'; // MongoDB route name for endpoint.
+
+d3.json(link).then(data => {
+  city.forEach(c => {
+    let cityObject = {
+        'type':'Feature',
+        'properties': {
+            'name': c.name,
+            'highSpeed': c.highSpeed
+        },
+        'geometry': {
+            'type': 'Point',
+            'coordinates': [c.lat, c.lng]
+        }
+    };
+  });
 });
