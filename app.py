@@ -13,7 +13,7 @@ app.config["DEBUG"] = True
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/Census_Data"
 mongo = PyMongo(app)
-servicerequests = mongo.db.servicerequests
+servicerequests = mongo.db.Data
 
 # Route to render index.html template using data from Mongo
 @app.route("/")
@@ -25,7 +25,8 @@ def index():
 
 @app.route("/api/v1/data", methods=['GET'])
 def serveData():
-    return jsonify(servicerequests)
+    return jsonify(list(servicerequests.find({ },
+   { '_id': 0})))
 
 if __name__ == "__main__":
     app.run(debug=True)
