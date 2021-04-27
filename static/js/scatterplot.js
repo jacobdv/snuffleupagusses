@@ -20,6 +20,8 @@ const chartGroup = svg
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+const duration = 150000;
+
 
 //////////////////////////////////////////////////
 
@@ -48,10 +50,9 @@ function yScale(data, yVariable) {
 function renderCircles(circlesGroup, newXScale, newYScale, xVariable, yVariable) {
     circlesGroup
         .transition()
-        .duration(1000)
+        .duration(duration)
         .attr('cx', d => newXScale(d[xVariable]))
         .attr('cy', d => newYScale(d[yVariable]));
-    console.log(circlesGroup)
     return circlesGroup;
 };
 // Draws x axis.
@@ -60,9 +61,18 @@ function renderX(newXScale, xAxis) {
         .axisBottom(newXScale);
     xAxis
         .transition()
-        .duration(2000)
+        .duration(duration)
         .call(bottomAxis);
     return xAxis;
+};
+function renderY(newYScale, yAxis) {
+    const leftAxis = d3  
+        .axisLeft(newYScale);
+    yAxis
+        .transition()
+        .duration(duration)
+        .call(leftAxis);
+    return yAxis;
 };
 function updateToolTip(xVariable, circlesGroup) {
     let label;
@@ -97,7 +107,7 @@ function updateToolTip(xVariable, circlesGroup) {
 Set up based on initial variables.
 */
 // Import data.
-d3.csv('data/internet_census_combined.csv').then(data => {
+d3.csv('../static/data/internet_census_combined.csv').then(data => {
     // Retyping the data to be used.
     data.forEach(data => {
         data.MedianIncome = +data.MedianIncome;
