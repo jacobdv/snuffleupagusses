@@ -19,5 +19,13 @@ def index():
     # Return template and data
     return render_template("index.html", data=Census_Data)
 
+# @app.route("/insert")
+# def insert_all():
+#     # run the function to insert all the data by passing the collection
+#     mongo.db.collection.insert_all()
+
+#     # once complete redict to the homepage
+#     return redirect(url_for('index'))
+
 if __name__ == "__main__":
     app.run(debug=True)
