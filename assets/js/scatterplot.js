@@ -161,7 +161,7 @@ d3.csv('data/internet_census_combined.csv').then(data => {
         .attr('transform', 'rotate(-90)')
         .attr('x', -(chartH/2))
         .attr('y', -70)
-        .attr('value', 'Population With High Speed Internet')
+        .attr('value', 'PopulationWithHighSpeedInternet')
         .classed('active', true)
         .text('Population With High Speed Internet');
 
@@ -183,6 +183,8 @@ Set up for updating variables on click.
                 xVariable = xValue;
                 xLinearScale = xScale(data, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
+                yLinearScale = yScale(data, yVariable);
+                yAxis = renderY(yLinearScale, yAxis);
                 circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
                 if (xVariable === 'PopulationWithHighSchoolDiploma') {
                     xHSDiplomaLabel
