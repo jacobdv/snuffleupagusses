@@ -32,7 +32,7 @@ def cityData(state):
     return stateCitiesList
 
 # API endpoint for states' aggregated data.
-@app.route("/api/states", methods=['GET'])
+@app.route("/api/states/", methods=['GET'])
 def stateData():
     # Creates a list from the collection and uses json_util to return this result.
     statesList = list(statesCollection.find())
