@@ -80,7 +80,7 @@ function markerColor(population) {
 }
 };
 
-d3.csv('data/internet_census_combined.csv').then(city => {
+d3.csv('static/data/internet_census_combined.csv').then(city => {
     city.forEach(c => {
         let cityObject = {
             'type':'Feature',
