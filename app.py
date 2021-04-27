@@ -1,31 +1,31 @@
 # Import dependencies
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from flask_pymongo import PyMongo
+from flask_cors import CORS
 from census import Census
 
 # Create an instance of Flask
 app = Flask(__name__)
+CORS(app)
 
 # Use PyMongo to establish Mongo connection
-mongo = PyMongo(app, uri="mongodb://localhost:27017/Census_Data")
+app.config["DEBUG"] = True
+
+app.config["MONGO_URI"] = "mongodb://localhost:27017/Census_Data"
+mongo = PyMongo(app)
+servicerequests = mongo.db.servicerequests
 
 # Route to render index.html template using data from Mongo
 @app.route("/")
 def index():
 
-    # Find one record of data from the mongo database
-    Census_Data = mongo.db.collection.find_one()
-
     # Return template and data
-    return render_template("index.html", data=Census_Data)
+    return render_template("index.html")
 
-# @app.route("/insert")
-# def insert_all():
-#     # run the function to insert all the data by passing the collection
-#     mongo.db.collection.insert_all()
 
-#     # once complete redict to the homepage
-#     return redirect(url_for('index'))
+@app.route("/api/v1/data", methods=['GET'])
+def serveData():
+    return jsonify(servicerequests)
 
 if __name__ == "__main__":
     app.run(debug=True)
