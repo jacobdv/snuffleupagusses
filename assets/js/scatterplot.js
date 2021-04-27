@@ -64,7 +64,31 @@ function renderX(newXScale, xAxis) {
         .call(bottomAxis);
     return xAxis;
 };
+function updateToolTip(xVariable, circlesGroup) {
+    let label;
+    if (xVariable === 'Median Income') {
+        label = 'Median Income';
+    } else if (xVariable === 'PopulationWithHighSchoolDiploma') {
+        label = 'Population With High School Diploma';
+    }
 
+    const toolTip = d3.tip()
+        .attr('class','tooltip')
+        .offset([80, -60])
+        .html(d => `${d.city}<br>${label} ${d[xVariable]}`);
+    
+    circlesGroup.call(toolTip);
+
+    circlesGroup.on("mouseover", function(data) {
+        toolTip.show(data);
+      })
+      // onmouseout event
+      .on("mouseout", function(data) {
+        toolTip.hide(data);
+      });
+  
+    return circlesGroup;
+}
 
 //////////////////////////////////////////////////
 
