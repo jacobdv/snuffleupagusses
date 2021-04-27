@@ -23,7 +23,7 @@ const layers = {
   MedianIncome: new L.LayerGroup()
 };
 // Map
-const myMap = L.map('map', {
+const myMap = L.map('mapbox-map', {
   center: [39.8283, -98.5795],
   zoom: 4,
   layers: [
