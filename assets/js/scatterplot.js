@@ -31,7 +31,7 @@ function xScale(data, xVariable) {
     const xLinearScale = d3
         .scaleLinear()
         .range([0, chartW])
-        .domain([d3.min(data, d => d[xVariable]) * 0.8,
+        .domain([0,
             (d3.max(data, d => d[xVariable])) * 1.2]);
     return xLinearScale;
 };
