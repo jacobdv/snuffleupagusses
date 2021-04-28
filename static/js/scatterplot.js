@@ -29,23 +29,45 @@ function yScale(dataJSON, yVariable) {
 }
 function renderX(newXScale, xAxis) {
     const bottomAxis = d3.axisBottom(newXScale);
-    xAxis.transition().duration(duration).call(bottomAxis);
+    xAxis.transition().duration(aDuration).call(bottomAxis);
     return xAxis;
 }
 function renderY(newYScale, yAxis) {
     const leftAxis = d3.axisLeft(newYScale);
-    yAxis.transition().duration(duration).call(leftAxis);
+    yAxis.transition().duration(aDuration).call(leftAxis);
     return yAxis;
 }
-function renderCircles(circlesGroup, newXScale, newYScale, xVariable, yVariable) {
+
+function drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable) {
+    circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
+        .attr('cx', d => xLinearScale(d[xVariable]))
+        .attr('cy', d => yLinearScale(d[yVariable]))
+        .attr('r', 5).attr('fill', 'cornflowerblue')
+        .attr('class','circle')
+        .attr('opacity', 0).attr('stroke', 'black').attr('stroke-width', 0.75);
+    return circlesGroup;
+}
+
+function transitionIn(circlesGroup) {
     circlesGroup.transition().duration(duration)
-        .attr('cx', d => newXScale(d[xVariable]))
-        .attr('cy', d => newYScale(d[yVariable]));
+        .attr('opacity', 0.95);
     return circlesGroup;
 };
+
+function transitionOut(circlesGroup) {
+    circlesGroup.transition().duration(duration)
+        .attr('opacity', 0);
+    return circlesGroup;
+};
+
 function removeCircles() {
+    delayRemove();
     d3.selectAll('.circle').remove();
-}
+};
+
+function delayRemove() {
+    d3.transition().duration(duration);
+};
 
 // Data interaction.
 Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesData]) => {
@@ -69,12 +91,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         .call(leftAxis);
 
     // Initial state cirles.
-    let circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
-        .attr('cx', d => xLinearScale(d[xVariable]))
-        .attr('cy', d => yLinearScale(d[yVariable]))
-        .attr('r', 5).attr('fill', 'cornflowerblue')
-        .attr('class','circle')
-        .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);
+    let circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);
+    transitionIn(circlesGroup);
 
     // Calls function to update scatterplot on selection change.
     d3.select('#selDataset').on('change', function() {
@@ -84,35 +102,26 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         // If indicates state-level data. Else indicates city data for a selected state.
         if (selectedRegion === 'all-states') {
             dataset = statesData;
-            removeCircles();
+            circlesGroup = transitionOut(circlesGroup);
+            removeCircles(circlesGroup);
             xLinearScale = xScale(dataset, xVariable);
             xAxis = renderX(xLinearScale, xAxis);
             yLinearScale = yScale(dataset, yVariable);
             yAxis = renderY(yLinearScale, yAxis);
-            let circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
-                    .attr('cx', d => xLinearScale(d[xVariable]))
-                    .attr('cy', d => yLinearScale(d[yVariable]))
-                    .attr('r', 5).attr('fill', 'cornflowerblue')
-                    .attr('class','circle')
-                    .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);                
-            circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
+            circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
+            transitionIn(circlesGroup);        
         } else {
             console.log(selectedRegion)
             d3.json(`http://127.0.0.1:5000/api/cities/${selectedRegion}/`).then(data => {
                 dataset = data;
-                removeCircles();
+                circlesGroup = transitionOut(circlesGroup);
+                removeCircles(circlesGroup);
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
                 yAxis = renderY(yLinearScale, yAxis);
-                let circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
-                    .attr('cx', d => xLinearScale(d[xVariable]))
-                    .attr('cy', d => yLinearScale(d[yVariable]))
-                    .attr('r', 5).attr('fill', 'cornflowerblue')
-                    .attr('class','circle')
-                    .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);
-                renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
-                
+                circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
+                transitionIn(circlesGroup);  
             })
         }
     });
@@ -143,18 +152,14 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             .attr('value');
             if (xValue !== xVariable) {
                 xVariable = xValue;
-                removeCircles();
+                circlesGroup = transitionOut(circlesGroup);
+                removeCircles(circlesGroup);
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
                 yAxis = renderY(yLinearScale, yAxis);
-                let circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
-                    .attr('cx', d => xLinearScale(d[xVariable]))
-                    .attr('cy', d => yLinearScale(d[yVariable]))
-                    .attr('r', 5).attr('fill', 'cornflowerblue')
-                    .attr('class','circle')
-                    .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);                
-                circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
+                circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
+                transitionIn(circlesGroup);              
                 if (xVariable === 'PopulationWithHighSchoolDiploma') {
                     xHSDiplomaLabel
                         .classed('active', true)
@@ -170,5 +175,6 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                         .classed('active', true)
                         .classed('inactive', false);
                 }
-            }        })
+            }        
+        })
 }).catch(error => console.log(error));
