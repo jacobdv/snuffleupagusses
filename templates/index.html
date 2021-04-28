@@ -19,18 +19,30 @@
         <link rel="stylesheet" type="text/css" href="../static/css/style.css">
         <!-- D3 -->
         <link rel="stylesheet" type="text/css" href="../static/css/d3Style.css">
-        
     </head>
     <body>
         <!-- Divs for Visualizations -->
-        <div id="mapbox-map"></div>
-        <div id="scatterplot"></div>
         <div class='container'>
             <div class="row">
                 <div class='col-md-12 jumbotron text-center'>
                     <h1>Snuffleupagusses</h1>
                 </div>
             </div>
+        </div>
+        <div class='container'>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="well">
+                        <h5>Select a Region:</h5>
+                        <select id='mapDataset'>
+                            <option value='all-states'>All States</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id='map'></div>
+        <div class='container'>
             <div class="row">
                 <div class="col-md-2">
                     <div class="well">
@@ -61,9 +73,9 @@
         <script src="https://d3js.org/d3.v5.min.js"></script>
         <!-- Config File for Mapbox -->
         <script type="text/javascript" src="../static/js/config.js"></script>
+        <script type="text/javascript" src="../static/js/constants.js"></script>
         <!-- Visualization Scripts -->
         <script type="text/javascript" src="../static/js/highSpeedMap.js"></script>
-        <script type="text/javascript" src="../static/js/highchartsMap.js"></script>
         <script type="text/javascript" src="../static/js/scatterplot.js"></script>
         <!-- Highchart Scripts -->
         <script src="https://code.highcharts.com/highcharts.js"></script>
