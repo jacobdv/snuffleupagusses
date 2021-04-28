@@ -23,13 +23,14 @@ const layers = {
   MedianIncome: new L.LayerGroup()
 };
 // Map
-const myMap = L.map('mapbox-map', {
-  center: [39.8283, -98.5795],
+const myMap = L.map('map', {
+  center: mapCenter,
   zoom: 4,
   layers: [
     layers.HighSpeedAccess,
     layers.MedianIncome
-  ]
+  ],
+  scrollWheelZoom: false
 });
 
 // Adding dark map and creating maps and overlays labels for control panel.
@@ -58,6 +59,10 @@ const citiesGeoJSON = {
   'type': 'FeatureCollection',
   'features': []
 };
+const usCitiesGeoJSON = {
+  'type': 'FeatureCollection',
+  'features': []
+};
 
 // Function for marker radius.
 function markerRadius(population) {
@@ -65,61 +70,120 @@ function markerRadius(population) {
 };
 
 function markerColor(population) {
-  switch (true) {
-    case population > 1000000 : return ('#084081');
-    case population > 750000 : return ('#0868ac');
-    case population > 500000 : return ('#2b8cbe');
-    case population > 250000 : return ('#4eb3d3');
-    case population > 100000 : return ('#7bccc4');
-    case population > 75000 : return ('#a8ddb5');
-    case population > 50000 : return ('#ccebc5');
-    case population > 25000 : return ('#e0f3db');
-    case population > 10000 : return ('#f7fcf0');
-    // Default would indicate an above ground earthquake.
-    default : return ('#ffffff');
-}
+  // if (dataset === statesData) {
+    switch (true) {
+      case population > 1000000 : return ('#084081');
+      case population > 750000 : return ('#0868ac');
+      case population > 500000 : return ('#2b8cbe');
+      case population > 250000 : return ('#4eb3d3');
+      case population > 100000 : return ('#7bccc4');
+      case population > 75000 : return ('#a8ddb5');
+      case population > 50000 : return ('#ccebc5');
+      case population > 25000 : return ('#e0f3db');
+      case population > 10000 : return ('#f7fcf0');
+      // Default would indicate an above ground earthquake.
+      default : return ('#ffffff');
+    }
+  // }
 };
 
-d3.csv('../static/data/internet_census_combined.csv').then(city => {
-    city.forEach(c => {
-        let cityObject = {
-            'type':'Feature',
-            'properties': {
-                'name': c.City,
-                'highSpeed': c.PopulationWithHighSpeedInternet
-            },
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [c.Latitude, c.Longitude]
-            }
-        };
-        citiesGeoJSON.features.push(cityObject);
-    })
-    for (let i = 0; i < citiesGeoJSON.features.length; i++) {
-      // City information.
-      let city = citiesGeoJSON.features[i];
-      let coords = city.geometry.coordinates;
-      let popWithAccess = city.properties.highSpeed;
-      // New city marker.
-      const newCity = L.circle(coords, {
-        fillOpacity: 0.75,
-        color: 'black',
-        weight: 0.5,
-        fillColor: markerColor(popWithAccess),
-        radius: markerRadius(popWithAccess)
-      });
-      // City addition to map and binding popup with name and population.
-      newCity.addTo(layers.HighSpeedAccess);
-      newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
-    };
-});
+Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesData]) => {
+    // Adding dropdown content.
+    let mapDropdown = d3.select('#mapDataset');
+    statesData.forEach(state => {
+      mapDropdown.append('option').text(state.state).attr('value',state.state);
+    });
 
-// // MongoDB Part
-// const link = 'data/internet_census_combined.json'; // MongoDB route name for endpoint.
 
-// d3.json(link).then(data => {
-//   console.log(data);
-//   let i = 0;
-  
-//   console.log(i)
-// });
+
+    d3.select('#mapDataset').on('change', function() {
+      let selection = mapDropdown.property('value');
+      console.log(selection)
+      if (selection !== 'all-states') {
+        d3.json(`http://127.0.0.1:5000/api/cities/${selection}/`).then(data => {
+          citiesData = data;
+          citiesData.forEach(c => {
+            let cityObject = {
+                'type':'Feature',
+                'properties': {
+                    'name': c.City,
+                    'highSpeed': c.PopulationWithHighSpeedInternet
+                },
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [c.Latitude, c.Longitude]
+                }
+            };
+            citiesGeoJSON.features.push(cityObject);
+          })
+          for (let i = 0; i < citiesGeoJSON.features.length; i++) {
+            // City information.
+            let city = citiesGeoJSON.features[i];
+            let coords = city.geometry.coordinates;
+            let popWithAccess = city.properties.highSpeed;
+            // New city marker.
+            const newCity = L.circle(coords, {
+              fillOpacity: 0.75,
+              color: 'black',
+              weight: 0.5,
+              fillColor: markerColor(popWithAccess),
+              radius: markerRadius(popWithAccess)
+            });
+            // City addition to map and binding popup with name and population.
+            newCity.addTo(layers.HighSpeedAccess);
+            newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
+          };
+        })
+
+      // This is the country wide map here. Maybe more choropleth like?
+      } else {
+        const filteredUSCities = [];
+        // Filtering state data.
+        statesData.forEach(state => {
+          d3.json(`http://127.0.0.1:5000/api/cities/${state.state}/`).then(state => {
+            state.forEach(city => {
+              if (city.Population > 100000) {
+                filteredUSCities.push(city);
+              }
+            })
+          });
+          console.log(filteredUSCities)
+          // For some reason it isn't stepping in here.
+          filteredUSCities.forEach(values => {
+            console.log('here')
+            let usCityObject = {
+              'type':'Feature',
+              'properties': {
+                  'name': c.City,
+                  'highSpeed': c.PopulationWithHighSpeedInternet
+              },
+              'geometry': {
+                  'type': 'Point',
+                  'coordinates': [c.Latitude, c.Longitude]
+              }
+            };
+            console.log(usCityObject)
+            usCitiesGeoJSON.features.push(cityObject);
+          })
+          for (let i = 0; i < usCitiesGeoJSON.features.length; i++) {
+            // City information.
+            console.log(i)
+            let city = usCitiesGeoJSON.features[i];
+            let coords = city.geometry.coordinates;
+            let popWithAccess = city.properties.highSpeed;
+            // New city marker.
+            const newCity = L.circle(coords, {
+              fillOpacity: 0.75,
+              color: 'black',
+              weight: 0.5,
+              fillColor: markerColor(popWithAccess),
+              radius: markerRadius(popWithAccess)
+            });
+            // City addition to map and binding popup with name and population.
+            newCity.addTo(layers.HighSpeedAccess);
+            newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
+          };
+        });
+      }
+    });
+  });

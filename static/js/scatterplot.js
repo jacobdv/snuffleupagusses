@@ -1,9 +1,4 @@
 // Renders scatterplot and initial dimensions.
-const svgH = 500;
-const svgW = 800;
-const margin = { top:20, right:40, bottom:80, left:100 };
-const chartH = svgH - (margin.top + margin.bottom);
-const chartW = svgW - (margin.left + margin.right);
 let xVariable = 'MedianIncome';
 let yVariable = 'PopulationWithHighSpeedInternet';
 let region = 'all-states';
@@ -18,12 +13,6 @@ const svg = d3
 const chartGroup = svg
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
-// Duration for transitions (ms).
-const duration = 1000;
-// City data.
-const cityLink = 'http://127.0.0.1:5000/api/cities/'
-// State data.
-const stateLink = 'http://127.0.0.1:5000/api/states/'
 
 // Update scatterplot.
 function xScale(dataJSON, xVariable) {
@@ -54,7 +43,9 @@ function renderCircles(circlesGroup, newXScale, newYScale, xVariable, yVariable)
         .attr('cy', d => newYScale(d[yVariable]));
     return circlesGroup;
 };
-
+function removeCircles() {
+    d3.selectAll('.circle').remove();
+}
 
 // Data interaction.
 Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesData]) => {
@@ -69,11 +60,11 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
 
     // Initial scatterplot.
     let xLinearScale = xScale(dataset, xVariable);
-    const bottomAxis = d3.axisBottom(xLinearScale);
+    let bottomAxis = d3.axisBottom(xLinearScale);
     let xAxis = chartGroup.append('g').classed('x-axis', true)
         .attr('transform', `translate(0, ${chartH})`).call(bottomAxis);
     let yLinearScale = yScale(dataset, yVariable);
-    const leftAxis = d3.axisLeft(yLinearScale);
+    let leftAxis = d3.axisLeft(yLinearScale);
     let yAxis = chartGroup.append('g').classed('y-axis', true)
         .call(leftAxis);
 
@@ -82,6 +73,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         .attr('cx', d => xLinearScale(d[xVariable]))
         .attr('cy', d => yLinearScale(d[yVariable]))
         .attr('r', 5).attr('fill', 'cornflowerblue')
+        .attr('class','circle')
         .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);
 
     // Calls function to update scatterplot on selection change.
@@ -92,22 +84,35 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         // If indicates state-level data. Else indicates city data for a selected state.
         if (selectedRegion === 'all-states') {
             dataset = statesData;
-            
+            removeCircles();
             xLinearScale = xScale(dataset, xVariable);
             xAxis = renderX(xLinearScale, xAxis);
             yLinearScale = yScale(dataset, yVariable);
             yAxis = renderY(yLinearScale, yAxis);
+            let circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
+                    .attr('cx', d => xLinearScale(d[xVariable]))
+                    .attr('cy', d => yLinearScale(d[yVariable]))
+                    .attr('r', 5).attr('fill', 'cornflowerblue')
+                    .attr('class','circle')
+                    .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);                
             circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
         } else {
             console.log(selectedRegion)
             d3.json(`http://127.0.0.1:5000/api/cities/${selectedRegion}/`).then(data => {
                 dataset = data;
-                // NEED TO CALL NEW X AND Y SCALE WHEN CHANGING DATASETS.
+                removeCircles();
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
                 yAxis = renderY(yLinearScale, yAxis);
-                circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
+                let circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
+                    .attr('cx', d => xLinearScale(d[xVariable]))
+                    .attr('cy', d => yLinearScale(d[yVariable]))
+                    .attr('r', 5).attr('fill', 'cornflowerblue')
+                    .attr('class','circle')
+                    .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);
+                renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
+                
             })
         }
     });
@@ -134,14 +139,21 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         .selectAll('text')
         .on('click', function() {
             const xValue = d3
-                .select(this)
-                .attr('value');
+            .select(this)
+            .attr('value');
             if (xValue !== xVariable) {
                 xVariable = xValue;
+                removeCircles();
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
                 yAxis = renderY(yLinearScale, yAxis);
+                let circlesGroup = chartGroup.selectAll('circle').data(dataset).join('circle')
+                    .attr('cx', d => xLinearScale(d[xVariable]))
+                    .attr('cy', d => yLinearScale(d[yVariable]))
+                    .attr('r', 5).attr('fill', 'cornflowerblue')
+                    .attr('class','circle')
+                    .attr('opacity', 0.95).attr('stroke', 'black').attr('stroke-width', 0.75);                
                 circlesGroup = renderCircles(circlesGroup, xLinearScale, yLinearScale, xVariable, yVariable);
                 if (xVariable === 'PopulationWithHighSchoolDiploma') {
                     xHSDiplomaLabel
@@ -158,6 +170,5 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                         .classed('active', true)
                         .classed('inactive', false);
                 }
-            }
-        })
+            }        })
 }).catch(error => console.log(error));
