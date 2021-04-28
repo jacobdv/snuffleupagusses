@@ -10,4 +10,5 @@ const svgW = 800;
 const margin = { top:20, right:40, bottom:80, left:100 };
 const chartH = svgH - (margin.top + margin.bottom);
 const chartW = svgW - (margin.left + margin.right);
-const duration = 0;
+const duration = 2000;
+const aDuration = duration - 800;
