@@ -39,7 +39,7 @@ const maps = {
   'Light': lightmap,
   'Dark': darkmap
 };
-const overlays = {
+let overlays = {
   'High Speed Access': layers.HighSpeedAccess,
   'Median Income': layers.MedianIncome
 };
@@ -87,6 +87,25 @@ function markerColor(population) {
   // }
 };
 
+function clearMap(layer) {
+  layer.clearLayers();
+};
+
+function getCoords(state) {
+  d3.json(`https://www.mapquestapi.com/geocoding/v1/address?key=${mapQuestKey}&inFormat=kvp&outFormat=json&location=${state}%2C+US&thumbMaps=false`).then(mapQuestData => {
+    let coords = [];
+    if (mapQuestData.results[0].locations[0].adminArea1 === 'US') {
+      coords = [mapQuestData.results[0].locations[0].latLng.lat,mapQuestData.results[0].locations[0].latLng.lng]
+    } else if (mapQuestData.results[0].locations[1].adminArea1 === 'US') {
+      coords = [mapQuestData.results[0].locations[1].latLng.lat,mapQuestData.results[0].locations[1].latLng.lng]
+    };
+    myMap.setView(new L.LatLng(coords[0],coords[1]), 5, {
+      animate: true, duration: 1.5
+    })
+  });
+}
+
+
 Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesData]) => {
     // Adding dropdown content.
     let mapDropdown = d3.select('#mapDataset');
@@ -98,7 +117,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
 
     d3.select('#mapDataset').on('change', function() {
       let selection = mapDropdown.property('value');
-      console.log(selection)
+      clearMap(layers.HighSpeedAccess);
       if (selection !== 'all-states') {
         d3.json(`http://127.0.0.1:5000/api/cities/${selection}/`).then(data => {
           citiesData = data;
@@ -113,36 +132,27 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                     'type': 'Point',
                     'coordinates': [c.Latitude, c.Longitude]
                 }
-            };
-            citiesGeoJSON.features.push(cityObject);
-          })
-          for (let i = 0; i < citiesGeoJSON.features.length; i++) {
-            // City information.
-            let city = citiesGeoJSON.features[i];
-            let coords = city.geometry.coordinates;
-            let popWithAccess = city.properties.highSpeed;
-            // New city marker.
-            const newCity = L.circle(coords, {
+            }; // usCityObject end bracket.
+            const newCity = L.circle(cityObject.geometry.coordinates, {
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
-              fillColor: markerColor(popWithAccess),
-              radius: markerRadius(popWithAccess)
+              fillColor: markerColor(cityObject.properties.highSpeed),
+              radius: markerRadius(cityObject.properties.highSpeed)
             });
-            // City addition to map and binding popup with name and population.
             newCity.addTo(layers.HighSpeedAccess);
-            newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
-          };
+            newCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject}`);
         })
+      });
+      getCoords(selection, myMap)
 
-      // This is the country wide map here. Maybe more choropleth like?
       } else {
         const filteredUSCities = [];
         // Filtering state data.
         statesData.forEach(state => {
           d3.json(`http://127.0.0.1:5000/api/cities/${state.state}/`).then(state => {
             state.forEach(c => {
-              if (c.Population > 100000) {
+              if (c.Population > 5000) {
                 let usCityObject = {
                   'type':'Feature',
                   'properties': {
@@ -166,26 +176,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               }
             })
           });
-          
-          // for (let i = 0; i < usCitiesGeoJSON.features.length; i++) {
-          //   // City information.
-          //   console.log(i)
-          //   let city = usCitiesGeoJSON.features[i];
-          //   let coords = city.geometry.coordinates;
-          //   let popWithAccess = city.properties.highSpeed;
-          //   // New city marker.
-          //   const newCity = L.circle(coords, {
-          //     fillOpacity: 0.75,
-          //     color: 'black',
-          //     weight: 0.5,
-          //     fillColor: markerColor(popWithAccess),
-          //     radius: markerRadius(popWithAccess)
-          //   });
-          //   // City addition to map and binding popup with name and population.
-          //   newCity.addTo(layers.HighSpeedAccess);
-          //   newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
-          // };
         });
+        myMap.setView(new L.LatLng(39.8283, -98.5795), 4)
       }
     });
   });

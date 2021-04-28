@@ -111,7 +111,6 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
             transitionIn(circlesGroup);        
         } else {
-            console.log(selectedRegion)
             d3.json(`http://127.0.0.1:5000/api/cities/${selectedRegion}/`).then(data => {
                 dataset = data;
                 circlesGroup = transitionOut(circlesGroup);
