@@ -27,10 +27,34 @@
     </head>
     <body>
         <!-- Divs for Visualizations -->
-        <div id="mapbox-map"></div>
+        <!-- <div id="mapbox-map"></div>
         <div id="highcharts-map"></div>
-        <div id="scatterplot"></div>
-        
+        <div id="scatterplot"></div> -->
+        <div class='container'>
+            <div class="row">
+                <div class='col-md-12 jumbotron text-center'>
+                    <h1>Snuffleupagusses</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="well">
+                        <h5>Select a Region:</h5>
+                        <select id='selDataset'>
+                            <option value='all-states'>All States</option>
+                        </select>
+                    </div>
+                </div>
+                <div class='col-md-10'>
+                    <div class="scatterplot"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
         <!-- D3 Script -->
         <script src="https://d3js.org/d3.v5.min.js"></script>
         <!-- Config File for Mapbox -->

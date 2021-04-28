@@ -8,6 +8,7 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
     // Iterates through each state.
     stateData.forEach(state => {
         // Accesses MapQuest API data to include state lat/lng in the geoJSON object.
+        // THIS REQUIRES A MAPQUEST API KEY CALLED 'mapQuestKey' IN YOUR CONFIG FILE. <<<<<<<<<<<<<< (https://developer.mapquest.com/)
         d3.json(`https://www.mapquestapi.com/geocoding/v1/address?key=${mapQuestKey}&inFormat=kvp&outFormat=json&location=${state.state}%2C+US&thumbMaps=false`).then(mapQuestData => {
             // Sets coords to a state's lat/lng.
             let coords = [];
@@ -35,7 +36,7 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
         })
     });
         
-    // ALL BELOW HERE IS HIGHCHARTS EXPERIMENTING.
+    // ALL BELOW HERE IS HIGHCHARTS EXPERIMENTING. <<<<<<<<<<<<<< (https://www.highcharts.com/docs/getting-started/installation)
     // NOTHING WORKING YET.
     
     const data = [], mapData = Highcharts.geojson(Highcharts.maps['countries/us/custom/us-small']);
