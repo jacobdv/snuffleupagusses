@@ -150,8 +150,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         .selectAll('text')
         .on('click', function() {
             const xValue = d3
-                .select(this)
-                .attr('value');
+            .select(this)
+            .attr('value');
             if (xValue !== xVariable) {
                 xVariable = xValue;
                 removeCircles();
@@ -181,6 +181,5 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                         .classed('active', true)
                         .classed('inactive', false);
                 }
-            }
-        })
+            }        })
 }).catch(error => console.log(error));
