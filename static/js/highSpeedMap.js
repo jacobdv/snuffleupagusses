@@ -141,48 +141,50 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         // Filtering state data.
         statesData.forEach(state => {
           d3.json(`http://127.0.0.1:5000/api/cities/${state.state}/`).then(state => {
-            state.forEach(city => {
-              if (city.Population > 100000) {
-                filteredUSCities.push(city);
+            state.forEach(c => {
+              if (c.Population > 100000) {
+                let usCityObject = {
+                  'type':'Feature',
+                  'properties': {
+                      'name': c.City,
+                      'highSpeed': c.PopulationWithHighSpeedInternet
+                  },
+                  'geometry': {
+                      'type': 'Point',
+                      'coordinates': [c.Latitude, c.Longitude]
+                  }
+                }; // usCityObject end bracket.
+                const newBigCity = L.circle(usCityObject.geometry.coordinates, {
+                  fillOpacity: 0.75,
+                  color: 'black',
+                  weight: 0.5,
+                  fillColor: markerColor(usCityObject.properties.highSpeed),
+                  radius: markerRadius(usCityObject.properties.highSpeed)
+                });
+                newBigCity.addTo(layers.HighSpeedAccess);
+                newBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject}`);
               }
             })
           });
-          console.log(filteredUSCities)
-          // For some reason it isn't stepping in here.
-          filteredUSCities.forEach(values => {
-            console.log('here')
-            let usCityObject = {
-              'type':'Feature',
-              'properties': {
-                  'name': c.City,
-                  'highSpeed': c.PopulationWithHighSpeedInternet
-              },
-              'geometry': {
-                  'type': 'Point',
-                  'coordinates': [c.Latitude, c.Longitude]
-              }
-            };
-            console.log(usCityObject)
-            usCitiesGeoJSON.features.push(cityObject);
-          })
-          for (let i = 0; i < usCitiesGeoJSON.features.length; i++) {
-            // City information.
-            console.log(i)
-            let city = usCitiesGeoJSON.features[i];
-            let coords = city.geometry.coordinates;
-            let popWithAccess = city.properties.highSpeed;
-            // New city marker.
-            const newCity = L.circle(coords, {
-              fillOpacity: 0.75,
-              color: 'black',
-              weight: 0.5,
-              fillColor: markerColor(popWithAccess),
-              radius: markerRadius(popWithAccess)
-            });
-            // City addition to map and binding popup with name and population.
-            newCity.addTo(layers.HighSpeedAccess);
-            newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
-          };
+          
+          // for (let i = 0; i < usCitiesGeoJSON.features.length; i++) {
+          //   // City information.
+          //   console.log(i)
+          //   let city = usCitiesGeoJSON.features[i];
+          //   let coords = city.geometry.coordinates;
+          //   let popWithAccess = city.properties.highSpeed;
+          //   // New city marker.
+          //   const newCity = L.circle(coords, {
+          //     fillOpacity: 0.75,
+          //     color: 'black',
+          //     weight: 0.5,
+          //     fillColor: markerColor(popWithAccess),
+          //     radius: markerRadius(popWithAccess)
+          //   });
+          //   // City addition to map and binding popup with name and population.
+          //   newCity.addTo(layers.HighSpeedAccess);
+          //   newCity.bindPopup(`<strong>${city.properties.name}</strong>: ${popWithAccess}`);
+          // };
         });
       }
     });
