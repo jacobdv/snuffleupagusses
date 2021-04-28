@@ -1,9 +1,4 @@
 // Renders scatterplot and initial dimensions.
-const svgH = 500;
-const svgW = 800;
-const margin = { top:20, right:40, bottom:80, left:100 };
-const chartH = svgH - (margin.top + margin.bottom);
-const chartW = svgW - (margin.left + margin.right);
 let xVariable = 'MedianIncome';
 let yVariable = 'PopulationWithHighSpeedInternet';
 let region = 'all-states';
@@ -18,12 +13,6 @@ const svg = d3
 const chartGroup = svg
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
-// Duration for transitions (ms).
-const duration = 0;
-// City data.
-const cityLink = 'http://127.0.0.1:5000/api/cities/'
-// State data.
-const stateLink = 'http://127.0.0.1:5000/api/states/'
 
 // Update scatterplot.
 function xScale(dataJSON, xVariable) {
