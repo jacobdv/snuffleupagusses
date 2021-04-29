@@ -109,20 +109,20 @@ function miMarkerColor(medianIncome) {
 
 // Function for AccessRate marker radius.
 function arMarkerRadius(accessRate) {
-  return (Math.sqrt(accessRate) * 150)
+  return (accessRate * 45000)
 };
 
 function arMarkerColor(accessRate) {
     switch (true) {
-      case accessRate > 100000 : return ('#7f0000');
-      case accessRate > 90000 : return ('#b30000');
-      case accessRate > 80000 : return ('#d7301f');
-      case accessRate > 70000 : return ('#ef6548');
-      case accessRate > 60000 : return ('#fc8d59');
-      case accessRate > 50000 : return ('#fdbb84');
-      case accessRate > 40000 : return ('#fdd49e');
-      case accessRate > 30000 : return ('#fee8c8');
-      case accessRate > 20000 : return ('#fff7ec');
+      case accessRate > 100000 : return ('#3f007d');
+      case accessRate > 90000 : return ('#54278f');
+      case accessRate > 80000 : return ('#6a51a3');
+      case accessRate > 70000 : return ('#807dba');
+      case accessRate > 60000 : return ('#9e9ac8');
+      case accessRate > 50000 : return ('#bcbddc');
+      case accessRate > 40000 : return ('#dadaeb');
+      case accessRate > 30000 : return ('#efedf5');
+      case accessRate > 20000 : return ('#fcfbfd');
       default : return ('#ffffff');
     }
 };
@@ -198,9 +198,10 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               radius: miMarkerRadius(cityObject.properties.population)
             });
             miNewCity.addTo(layers.MedianIncome);
-            miNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.medianIncome}`);
+            miNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: $${(cityObject.properties.medianIncome).toFixed(2)}`);
 
-            const arNewCity = L.circle(cityObject.geometry.coordinates, {
+            if (cityObject.properties.accessRate < 1) {
+              const arNewCity = L.circle(cityObject.geometry.coordinates, {
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
@@ -209,9 +210,13 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             });
             arNewCity.addTo(layers.AccessRate);
             arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate).toFixed(2)) * 100}%`);
+          }
         })
       });
       getCoords(selection, myMap);
+      myMap.addLayer(layers.AccessRate);
+      myMap.removeLayer(layers.HighSpeedAccess);
+      myMap.removeLayer(layers.MedianIncome);
       } else {
         const filteredUSCities = [];
         // Filtering state data.
@@ -251,22 +256,27 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   radius: miMarkerRadius(usCityObject.properties.population)
                 });
                 miNewBigCity.addTo(layers.MedianIncome);
-                miNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.medianIncome}`);
+                miNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: $${(usCityObject.properties.medianIncome.toFixed(2))}`);
 
-                const arNewBigCity = L.circle(usCityObject.geometry.coordinates, {
+                if (usCityObject.properties.accessRate < 1) {
+                  const arNewBigCity = L.circle(usCityObject.geometry.coordinates, {
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
-                  fillColor: miMarkerColor(usCityObject.properties.medianIncome),
-                  radius: miMarkerRadius(usCityObject.properties.accessRate)
+                  fillColor: arMarkerColor(usCityObject.properties.medianIncome),
+                  radius: arMarkerRadius(usCityObject.properties.accessRate)
                 });
                 arNewBigCity.addTo(layers.AccessRate);
                 arNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
+              }
               }
             })
           });
         });
         myMap.setView(new L.LatLng(39.8283, -98.5795), 4);
+        myMap.addLayer(layers.AccessRate);
+        myMap.removeLayer(layers.HighSpeedAccess);
+        myMap.removeLayer(layers.MedianIncome);
       }
     });
   });
