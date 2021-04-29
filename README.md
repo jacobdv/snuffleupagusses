@@ -1,7 +1,7 @@
 # Snuffleupagusses
 
 ## Instructions to Run Snuffleupagusses API Flask App
-- Clone repo onto local computer
+- Clone repo to local computer
 - Create a config.js file in static/js
 - Get a MapBox Token and save in config.js as API_KEY :https://account.mapbox.com/
 - Get a MapQuest api key and save in config.js as mapQuestKey: https://developer.mapquest.com/
@@ -10,6 +10,7 @@
 - Run app.py file in terminal
 
 ## Project Summary
+
 ### Snuffleupagusses Team Members
 - Elizabeth Sanchez
 - Jacob de Vries
