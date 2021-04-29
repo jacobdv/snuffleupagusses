@@ -141,7 +141,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               radius: markerRadius(cityObject.properties.highSpeed)
             });
             newCity.addTo(layers.HighSpeedAccess);
-            newCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject}`);
+            newCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
         })
       });
       getCoords(selection, myMap)
@@ -172,7 +172,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   radius: markerRadius(usCityObject.properties.highSpeed)
                 });
                 newBigCity.addTo(layers.HighSpeedAccess);
-                newBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject}`);
+                newBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
               }
             })
           });
