@@ -38,3 +38,5 @@ Initially we planned on creating a heatmap, an interactive map with layers and a
 - Interactive Bubble Map of the US showing access to high speed internet and median income by state.
 - Interactive Scatter Plot showing high speed internet access vs income and education level by state.
 - Interactive Stacked Column Chart displaying different education levels by state.  (Internet Speed on y, other variables on x) (Dropdown for state)
+
+TEST TEXT
