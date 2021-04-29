@@ -19,7 +19,7 @@ const darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}
 });
 // Layers
 const layers = {
-  HighSpeedAccess: new L.LayerGroup(),
+  // HighSpeedAccess: new L.LayerGroup(),
   MedianIncome: new L.LayerGroup()
 };
 // Map
@@ -27,7 +27,7 @@ const myMap = L.map('map', {
   center: mapCenter,
   zoom: 4,
   layers: [
-    layers.HighSpeedAccess,
+    // layers.HighSpeedAccess,
     layers.MedianIncome
   ],
   scrollWheelZoom: false
@@ -40,7 +40,7 @@ const maps = {
   'Dark': darkmap
 };
 let overlays = {
-  'High Speed Access': layers.HighSpeedAccess,
+  // 'High Speed Access': layers.HighSpeedAccess,
   'Median Income': layers.MedianIncome
 };
 
@@ -64,27 +64,44 @@ const usCitiesGeoJSON = {
   'features': []
 };
 
-// Function for marker radius.
-function markerRadius(population) {
-  return (Math.sqrt(population) * 100)
+// Function for HighSpeedInternet marker radius.
+// function hsiMarkerRadius(population) {
+//   return (Math.sqrt(population) * 100)
+// };
+
+// function hsiMarkerColor(population) {
+//     switch (true) {
+//       case population > 1000000 : return ('#084081');
+//       case population > 750000 : return ('#0868ac');
+//       case population > 500000 : return ('#2b8cbe');
+//       case population > 250000 : return ('#4eb3d3');
+//       case population > 100000 : return ('#7bccc4');
+//       case population > 75000 : return ('#a8ddb5');
+//       case population > 50000 : return ('#ccebc5');
+//       case population > 25000 : return ('#e0f3db');
+//       case population > 10000 : return ('#f7fcf0');
+//       default : return ('#ffffff');
+//     }
+// };
+
+// Function for MedianIncome marker radius.
+function miMarkerRadius(medianIncome) {
+  return (Math.sqrt(medianIncome) * 100)
 };
 
-function markerColor(population) {
-  // if (dataset === statesData) {
+function miMarkerColor(medianIncome) {
     switch (true) {
-      case population > 1000000 : return ('#084081');
-      case population > 750000 : return ('#0868ac');
-      case population > 500000 : return ('#2b8cbe');
-      case population > 250000 : return ('#4eb3d3');
-      case population > 100000 : return ('#7bccc4');
-      case population > 75000 : return ('#a8ddb5');
-      case population > 50000 : return ('#ccebc5');
-      case population > 25000 : return ('#e0f3db');
-      case population > 10000 : return ('#f7fcf0');
-      // Default would indicate an above ground earthquake.
+      case medianIncome > 1000000 : return ('#00441b');
+      case medianIncome > 750000 : return ('#006d2c');
+      case medianIncome > 500000 : return ('#238b45');
+      case medianIncome > 250000 : return ('#41ae76');
+      case medianIncome > 100000 : return ('#66c2a4');
+      case medianIncome > 75000 : return ('#99d8c9');
+      case medianIncome > 50000 : return ('#ccece6');
+      case medianIncome > 25000 : return ('#e5f5f9');
+      case medianIncome > 10000 : return ('#f7fcfd');
       default : return ('#ffffff');
     }
-  // }
 };
 
 function clearMap(layer) {
@@ -117,7 +134,9 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
 
     d3.select('#mapDataset').on('change', function() {
       let selection = mapDropdown.property('value');
-      clearMap(layers.HighSpeedAccess);
+      // clearMap(layers.HighSpeedAccess);
+      clearMap(layers.MedianIncome);
+
       if (selection !== 'all-states') {
         d3.json(`http://127.0.0.1:5000/api/cities/${selection}/`).then(data => {
           citiesData = data;
@@ -126,26 +145,37 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                 'type':'Feature',
                 'properties': {
                     'name': c.City,
-                    'highSpeed': c.PopulationWithHighSpeedInternet
+                    'highSpeed': c.PopulationWithHighSpeedInternet,
+                    'medianIncome': c.MedianIncome
                 },
                 'geometry': {
                     'type': 'Point',
                     'coordinates': [c.Latitude, c.Longitude]
                 }
             }; // usCityObject end bracket.
-            const newCity = L.circle(cityObject.geometry.coordinates, {
+
+            // const hsiNewCity = L.circle(cityObject.geometry.coordinates, {
+            //   fillOpacity: 0.75,
+            //   color: 'black',
+            //   weight: 0.5,
+            //   fillColor: hsiMarkerColor(cityObject.properties.highSpeed),
+            //   radius: hsiMarkerRadius(cityObject.properties.highSpeed)
+            // });
+            // hsiNewCity.addTo(layers.HighSpeedAccess);
+            // hsiNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
+
+            const miNewCity = L.circle(cityObject.geometry.coordinates, {
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
-              fillColor: markerColor(cityObject.properties.highSpeed),
-              radius: markerRadius(cityObject.properties.highSpeed)
+              fillColor: miMarkerColor(cityObject.properties.medianIncome),
+              radius: miMarkerRadius(cityObject.properties.medianIncome)
             });
-            newCity.addTo(layers.HighSpeedAccess);
-            newCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
+            miNewCity.addTo(layers.MedianIncome);
+            miNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.medianIncome}`);
         })
       });
-      getCoords(selection, myMap)
-
+      getCoords(selection, myMap);
       } else {
         const filteredUSCities = [];
         // Filtering state data.
@@ -157,27 +187,38 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   'type':'Feature',
                   'properties': {
                       'name': c.City,
-                      'highSpeed': c.PopulationWithHighSpeedInternet
+                      'highSpeed': c.PopulationWithHighSpeedInternet,
+                      'medianIncome': c.MedianIncome
                   },
                   'geometry': {
                       'type': 'Point',
                       'coordinates': [c.Latitude, c.Longitude]
                   }
                 }; // usCityObject end bracket.
-                const newBigCity = L.circle(usCityObject.geometry.coordinates, {
+                // const hsiNewBigCity = L.circle(usCityObject.geometry.coordinates, {
+                //   fillOpacity: 0.75,
+                //   color: 'black',
+                //   weight: 0.5,
+                //   fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
+                //   radius: hsiMarkerRadius(usCityObject.properties.highSpeed)
+                // });
+                // hsiNewBigCity.addTo(layers.HighSpeedAccess);
+                // hsiNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
+
+                const miNewBigCity = L.circle(usCityObject.geometry.coordinates, {
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
-                  fillColor: markerColor(usCityObject.properties.highSpeed),
-                  radius: markerRadius(usCityObject.properties.highSpeed)
+                  fillColor: miMarkerColor(usCityObject.properties.medianIncome),
+                  radius: miMarkerRadius(usCityObject.properties.medianIncome)
                 });
-                newBigCity.addTo(layers.HighSpeedAccess);
-                newBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
+                miNewBigCity.addTo(layers.MedianIncome);
+                miNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.medianIncome}`);
               }
             })
           });
         });
-        myMap.setView(new L.LatLng(39.8283, -98.5795), 4)
+        myMap.setView(new L.LatLng(39.8283, -98.5795), 4);
       }
     });
   });

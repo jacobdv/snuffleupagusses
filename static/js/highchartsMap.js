@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-console.log('hello')
-=======
 // Addding in Highcart stacked bar chart
-Highcharts.chart('container2', {
+Highcharts.chart('container', {
     chart: {
         type: 'column'
     },
@@ -64,4 +61,3 @@ Highcharts.chart('container2', {
         data: [3, 4, 4, 2, 5]
     }]
 });
->>>>>>> main
