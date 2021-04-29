@@ -20,8 +20,6 @@ const chartGroup = svg
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-const duration = 150000;
-
 
 //////////////////////////////////////////////////
 
