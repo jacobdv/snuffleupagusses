@@ -92,7 +92,7 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
 });
 
 // Addding in Highcart stacked bar chart
-Highcharts.chart('container2', {
+Highcharts.chart('container', {
     chart: {
         type: 'column'
     },
