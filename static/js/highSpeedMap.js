@@ -20,7 +20,8 @@ const darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}
 // Layers
 const layers = {
   HighSpeedAccess: new L.LayerGroup(),
-  MedianIncome: new L.LayerGroup()
+  MedianIncome: new L.LayerGroup(),
+  AccessRate: new L.LayerGroup()
 };
 // Map
 const myMap = L.map('map', {
@@ -28,7 +29,8 @@ const myMap = L.map('map', {
   zoom: 4,
   layers: [
     layers.HighSpeedAccess,
-    layers.MedianIncome
+    layers.MedianIncome,
+    layers.AccessRate
   ],
   scrollWheelZoom: false
 });
@@ -41,7 +43,8 @@ const maps = {
 };
 let overlays = {
   'High Speed Access': layers.HighSpeedAccess,
-  'Median Income': layers.MedianIncome
+  'Median Income': layers.MedianIncome,
+  'High Speed Internet Access Rate': layers.AccessRate
 };
 
 L.control.layers(maps, overlays).addTo(myMap);
@@ -64,13 +67,12 @@ const usCitiesGeoJSON = {
   'features': []
 };
 
-// Function for marker radius.
-function markerRadius(population) {
+// Function for HighSpeedInternet marker radius.
+function hsiMarkerRadius(population) {
   return (Math.sqrt(population) * 100)
 };
 
-function markerColor(population) {
-  // if (dataset === statesData) {
+function hsiMarkerColor(population) {
     switch (true) {
       case population > 1000000 : return ('#084081');
       case population > 750000 : return ('#0868ac');
@@ -81,10 +83,48 @@ function markerColor(population) {
       case population > 50000 : return ('#ccebc5');
       case population > 25000 : return ('#e0f3db');
       case population > 10000 : return ('#f7fcf0');
-      // Default would indicate an above ground earthquake.
       default : return ('#ffffff');
     }
-  // }
+};
+
+// Function for MedianIncome marker radius.
+function miMarkerRadius(medianIncome) {
+  return (Math.sqrt(medianIncome) * 150)
+};
+
+function miMarkerColor(medianIncome) {
+    switch (true) {
+      case medianIncome > 100000 : return ('#7f0000');
+      case medianIncome > 90000 : return ('#b30000');
+      case medianIncome > 80000 : return ('#d7301f');
+      case medianIncome > 70000 : return ('#ef6548');
+      case medianIncome > 60000 : return ('#fc8d59');
+      case medianIncome > 50000 : return ('#fdbb84');
+      case medianIncome > 40000 : return ('#fdd49e');
+      case medianIncome > 30000 : return ('#fee8c8');
+      case medianIncome > 20000 : return ('#fff7ec');
+      default : return ('#ffffff');
+    }
+};
+
+// Function for AccessRate marker radius.
+function arMarkerRadius(accessRate) {
+  return (accessRate * 45000)
+};
+
+function arMarkerColor(accessRate) {
+    switch (true) {
+      case accessRate > 100000 : return ('#3f007d');
+      case accessRate > 90000 : return ('#54278f');
+      case accessRate > 80000 : return ('#6a51a3');
+      case accessRate > 70000 : return ('#807dba');
+      case accessRate > 60000 : return ('#9e9ac8');
+      case accessRate > 50000 : return ('#bcbddc');
+      case accessRate > 40000 : return ('#dadaeb');
+      case accessRate > 30000 : return ('#efedf5');
+      case accessRate > 20000 : return ('#fcfbfd');
+      default : return ('#ffffff');
+    }
 };
 
 function clearMap(layer) {
@@ -118,6 +158,9 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
     d3.select('#mapDataset').on('change', function() {
       let selection = mapDropdown.property('value');
       clearMap(layers.HighSpeedAccess);
+      clearMap(layers.MedianIncome);
+      clearMap(layers.AccessRate);
+
       if (selection !== 'all-states') {
         d3.json(`http://127.0.0.1:5000/api/cities/${selection}/`).then(data => {
           citiesData = data;
@@ -126,26 +169,54 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                 'type':'Feature',
                 'properties': {
                     'name': c.City,
-                    'highSpeed': c.PopulationWithHighSpeedInternet
+                    'highSpeed': c.PopulationWithHighSpeedInternet,
+                    'medianIncome': c.MedianIncome,
+                    'population': c.Population,
+                    'accessRate': (c.PopulationWithHighSpeedInternet / c.Population)
                 },
                 'geometry': {
                     'type': 'Point',
                     'coordinates': [c.Latitude, c.Longitude]
                 }
             }; // usCityObject end bracket.
-            const newCity = L.circle(cityObject.geometry.coordinates, {
+
+            const hsiNewCity = L.circle(cityObject.geometry.coordinates, {
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
-              fillColor: markerColor(cityObject.properties.highSpeed),
-              radius: markerRadius(cityObject.properties.highSpeed)
+              fillColor: hsiMarkerColor(cityObject.properties.highSpeed),
+              radius: hsiMarkerRadius(cityObject.properties.highSpeed)
             });
-            newCity.addTo(layers.HighSpeedAccess);
-            newCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
+            hsiNewCity.addTo(layers.HighSpeedAccess);
+            hsiNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
+
+            const miNewCity = L.circle(cityObject.geometry.coordinates, {
+              fillOpacity: 0.75,
+              color: 'black',
+              weight: 0.5,
+              fillColor: miMarkerColor(cityObject.properties.medianIncome),
+              radius: miMarkerRadius(cityObject.properties.population)
+            });
+            miNewCity.addTo(layers.MedianIncome);
+            miNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: $${(cityObject.properties.medianIncome).toFixed(2)}`);
+
+            if (cityObject.properties.accessRate < 1) {
+              const arNewCity = L.circle(cityObject.geometry.coordinates, {
+              fillOpacity: 0.75,
+              color: 'black',
+              weight: 0.5,
+              fillColor: arMarkerColor(cityObject.properties.medianIncome),
+              radius: arMarkerRadius(cityObject.properties.accessRate)
+            });
+            arNewCity.addTo(layers.AccessRate);
+            arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate).toFixed(2)) * 100}%`);
+          }
         })
       });
-      getCoords(selection, myMap)
-
+      getCoords(selection, myMap);
+      myMap.addLayer(layers.AccessRate);
+      myMap.removeLayer(layers.HighSpeedAccess);
+      myMap.removeLayer(layers.MedianIncome);
       } else {
         const filteredUSCities = [];
         // Filtering state data.
@@ -157,27 +228,55 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   'type':'Feature',
                   'properties': {
                       'name': c.City,
-                      'highSpeed': c.PopulationWithHighSpeedInternet
+                      'highSpeed': c.PopulationWithHighSpeedInternet,
+                      'medianIncome': c.MedianIncome,
+                      'population': c.Population,
+                      'accessRate': (c.PopulationWithHighSpeedInternet / c.Population)
                   },
                   'geometry': {
                       'type': 'Point',
                       'coordinates': [c.Latitude, c.Longitude]
                   }
                 }; // usCityObject end bracket.
-                const newBigCity = L.circle(usCityObject.geometry.coordinates, {
+                const hsiNewBigCity = L.circle(usCityObject.geometry.coordinates, {
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
-                  fillColor: markerColor(usCityObject.properties.highSpeed),
-                  radius: markerRadius(usCityObject.properties.highSpeed)
+                  fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
+                  radius: hsiMarkerRadius(usCityObject.properties.highSpeed)
                 });
-                newBigCity.addTo(layers.HighSpeedAccess);
-                newBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
+                hsiNewBigCity.addTo(layers.HighSpeedAccess);
+                hsiNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
+
+                const miNewBigCity = L.circle(usCityObject.geometry.coordinates, {
+                  fillOpacity: 0.75,
+                  color: 'black',
+                  weight: 0.5,
+                  fillColor: miMarkerColor(usCityObject.properties.medianIncome),
+                  radius: miMarkerRadius(usCityObject.properties.population)
+                });
+                miNewBigCity.addTo(layers.MedianIncome);
+                miNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: $${(usCityObject.properties.medianIncome.toFixed(2))}`);
+
+                if (usCityObject.properties.accessRate < 1) {
+                  const arNewBigCity = L.circle(usCityObject.geometry.coordinates, {
+                  fillOpacity: 0.75,
+                  color: 'black',
+                  weight: 0.5,
+                  fillColor: arMarkerColor(usCityObject.properties.medianIncome),
+                  radius: arMarkerRadius(usCityObject.properties.accessRate)
+                });
+                arNewBigCity.addTo(layers.AccessRate);
+                arNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
+              }
               }
             })
           });
         });
-        myMap.setView(new L.LatLng(39.8283, -98.5795), 4)
+        myMap.setView(new L.LatLng(39.8283, -98.5795), 4);
+        myMap.addLayer(layers.AccessRate);
+        myMap.removeLayer(layers.HighSpeedAccess);
+        myMap.removeLayer(layers.MedianIncome);
       }
     });
   });
