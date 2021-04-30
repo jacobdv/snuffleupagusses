@@ -2,10 +2,6 @@ body {
     padding: 0;
     margin: 0;
 }
-
-svg {
-    background-color: white;
-}
   
 #map,
 body,
@@ -18,7 +14,7 @@ html {
 }
 
 #map {
-    border: 5px solid black;
+    border: 2px solid black;
     margin: 5%;
     height: 90%;
     width: 90%;
