@@ -8,7 +8,7 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
     let bachelorsDegree = stateData.map(d => d.PopulationWithBachelorsDegree)
     let hsInternet = stateData.map(d => d.PopulationWithHighSpeedInternet)
     let population = stateData.map(d => d.Population)
-    
+
     
     Highcharts.chart('container2', {
         chart: {
@@ -26,7 +26,7 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
 
         yAxis: {
             min: 0,
-            max: 12000000,
+            // max: 12000000,
             title: {
                 text: 'Population'
             },
@@ -46,11 +46,13 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
         },
         tooltip: {
             headerFormat: '<b>{point.x}</b><br/>',
-            pointFormat: '{series.name}: {point.y}<br/>Total Educated: {point.stackTotal}<br/> {added.population}'
+            // pointFormat: '{series.name}: {point.y}<br/>Total Educated Population: {point.stackTotal}'
+            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+        shared: true
         },
         plotOptions: {
             column: {
-                stacking: 'normal'
+                stacking: 'percent'
             }
         },
         
