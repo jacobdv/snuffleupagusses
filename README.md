@@ -18,7 +18,7 @@
 - Mathew Miller
 
 ### Project Summary
-Our goal was to Use FCC data on internet speed to explore the relationship between high-speed internet access and community measures such as median income, population, average age, education level, etc.
+Our goal was to use FCC data on internet speed to explore the relationship between high-speed internet access and community measures such as median income, population, average age, education level, etc.
 We planned multiple interactive visualizations to explore the relationship between high-speed internet access and these community measures.
 We decided to use the Census API to pull in data on median income, population and education level.
 
