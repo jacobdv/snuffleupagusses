@@ -1,5 +1,4 @@
 // Addding in Highcart stacked bar chart
-<<<<<<< HEAD
 d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
     
     // Wrap the highcharts code in a then function after using d3.json to call in the data from your endpoint
@@ -27,21 +26,6 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
             type: 'column'
         },
 
-=======
-Highcharts.chart('container', {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Education Levels vs. Access to Highspeed Internet'
-    },
-    // Import in States Data
-    xAxis: {
-        categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
-    },
-    yAxis: {
-        min: 0,
->>>>>>> faf3e0c33136cb299a4d3a3f8b5e29997c5bbe0d
         title: {
             text: 'Education Levels vs. Access to Highspeed Internet'
         },
@@ -91,7 +75,6 @@ Highcharts.chart('container', {
                     enabled: true
                 }
             }
-<<<<<<< HEAD
         },
         // Pull out an array of values for each of the three datapoints.
         // Name key will hold the degree level, and the data will hold the array of values for each of the three.
@@ -109,18 +92,3 @@ Highcharts.chart('container', {
     });
 
 });
-=======
-        }
-    },
-    series: [{
-        name: 'John',
-        data: [5, 3, 4, 7, 2]
-    }, {
-        name: 'Jane',
-        data: [2, 2, 3, 2, 1]
-    }, {
-        name: 'Joe',
-        data: [3, 4, 4, 2, 5]
-    }]
-});
->>>>>>> faf3e0c33136cb299a4d3a3f8b5e29997c5bbe0d
