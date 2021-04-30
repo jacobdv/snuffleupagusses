@@ -7,13 +7,8 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
     let associatesDegree = stateData.map(d => d.PopulationWithAssociatesDegree)
     let bachelorsDegree = stateData.map(d => d.PopulationWithBachelorsDegree)
     let hsInternet = stateData.map(d => d.PopulationWithHighSpeedInternet)
-
-    console.log(stateData);
-    console.log(states)
-    console.log(hsDiploma);
-    console.log(associatesDegree);
-    console.log(bachelorsDegree);
-    console.log(hsInternet);
+    let population = stateData.map(d => d.Population)
+    
     
     Highcharts.chart('container2', {
         chart: {
@@ -50,17 +45,15 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
             shadow: false
         },
         tooltip: {
-            headerFormat: '<b>{state}</b><br/>',
-            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total Educated: {point.stackTotal}<br/> {added.population}'
         },
         plotOptions: {
             column: {
                 stacking: 'normal'
-            },
-            series: {}
+            }
         },
         
-
         // Add data to stacked columns
         series: [{
             name: "Bachelor's Degree",
