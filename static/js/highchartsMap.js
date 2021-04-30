@@ -1,57 +1,42 @@
 // Addding in Highcart stacked bar chart
 d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
     
-    // Wrap the highcharts code in a then function after using d3.json to call in the data from your endpoint
-    // Use map functions to pull out states for the x axis, and pull the three variables out into the series for the stacked bars themselves.
-    
-    // Pull the list of states out of the data
+    // Pull the data we need from out endpoint
     let states = stateData.map(d => d.state)
     let hsDiploma = stateData.map(d => d.PopulationWithHighSchoolDiploma)
     let associatesDegree = stateData.map(d => d.PopulationWithAssociatesDegree)
     let bachelorsDegree = stateData.map(d => d.PopulationWithBachelorsDegree)
     let hsInternet = stateData.map(d => d.PopulationWithHighSpeedInternet)
-    
-        console.log(stateData)
-        console.log(states)
-        console.log(hsDiploma)
-        console.log(associatesDegree)
-        console.log(bachelorsDegree)
-        console.log(hsInternet)
-    
 
-   
+    console.log(stateData);
+    console.log(states)
+    console.log(hsDiploma);
+    console.log(associatesDegree);
+    console.log(bachelorsDegree);
+    console.log(hsInternet);
     
-    Highcharts.chart('container', {
+    Highcharts.chart('container2', {
         chart: {
             type: 'column'
         },
 
         title: {
-            text: 'Education Levels vs. Access to Highspeed Internet'
+            text: 'State Education Levels'
         },
         
-        // Create x-Axis Labels
-        // replace the array in the xAxis object for categories with the states from our data
+        // Create x-Axis & y-Axis Labels
         xAxis: {
-            labels: [states]
+            categories: states
         },
 
         yAxis: {
             min: 0,
+            max: 12000000,
             title: {
                 text: 'Population'
             },
-            stackLabels: {
-                enabled: true,
-                style: {
-                    fontWeight: 'bold',
-                    color: ( // theme
-                        Highcharts.defaultOptions.title.style &&
-                        Highcharts.defaultOptions.title.style.color
-                    ) || 'gray'
-                }
-            }
         },
+        // Create the legend
         legend: {
             align: 'right',
             x: -30,
@@ -65,29 +50,27 @@ d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
             shadow: false
         },
         tooltip: {
-            headerFormat: '<b>{point.x}</b><br/>',
+            headerFormat: '<b>{state}</b><br/>',
             pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
         },
         plotOptions: {
             column: {
-                stacking: 'normal',
-                dataLabels: {
-                    enabled: true
-                }
-            }
+                stacking: 'normal'
+            },
+            series: {}
         },
-        // Pull out an array of values for each of the three datapoints.
-        // Name key will hold the degree level, and the data will hold the array of values for each of the three.
+        
 
+        // Add data to stacked columns
         series: [{
             name: "Bachelor's Degree",
-            data: [bachelorsDegree]
+            data: bachelorsDegree
         }, {
             name: "Associate's Degree",
-            data: [associatesDegree]
+            data: associatesDegree
         }, {
             name: "HS Diploma",
-            data: [hsDiploma]
+            data: hsDiploma
         }]
     });
 
