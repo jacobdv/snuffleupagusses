@@ -154,6 +154,51 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
     });
 
 
+    //////////////////////////
+
+
+    const filteredUSCities = [];
+        // Filtering state data.
+        statesData.forEach(state => {
+          d3.json(`http://127.0.0.1:5000/api/cities/${state.state}/`).then(state => {
+            state.forEach(c => {
+              if (c.Population > 5000) {
+                let usCityObject = {
+                  'type':'Feature',
+                  'properties': {
+                      'name': c.City,
+                      'highSpeed': c.PopulationWithHighSpeedInternet,
+                      'medianIncome': c.MedianIncome,
+                      'population': c.Population,
+                      'accessRate': (c.PopulationWithHighSpeedInternet / c.Population)
+                  },
+                  'geometry': {
+                      'type': 'Point',
+                      'coordinates': [c.Latitude, c.Longitude]
+                  }
+                }; // usCityObject end bracket.
+
+                if (usCityObject.properties.accessRate < 1) {
+                  const arNewBigCity = L.circle(usCityObject.geometry.coordinates, {
+                  fillOpacity: 0.75,
+                  color: 'black',
+                  weight: 0.5,
+                  fillColor: arMarkerColor(usCityObject.properties.medianIncome),
+                  radius: arMarkerRadius(usCityObject.properties.accessRate)
+                });
+                arNewBigCity.addTo(layers.AccessRate);
+                arNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
+              }
+              }
+            })
+          });
+        });
+      myMap.addLayer(layers.AccessRate);
+      myMap.removeLayer(layers.HighSpeedAccess);
+      myMap.removeLayer(layers.MedianIncome);
+
+      //////////////////////
+
 
     d3.select('#mapDataset').on('change', function() {
       let selection = mapDropdown.property('value');
