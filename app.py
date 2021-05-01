@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, url_for, jsonify, request
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from census import Census
+
 # Additional tools for API routes.
 import json
 from bson import json_util
