@@ -8,8 +8,8 @@ const svg = d3
     .append('svg')
     .attr('height', svgH)
     .attr('width', svgW)
-    .attr('id','scatterplot')
-    .attr('style','border: 2px solid black'); // COMMENT OUT LATER
+    .attr('style','border: 2px solid black; background-color:white');
+
 // Add chart group to the SVG.
 const chartGroup = svg
     .append('g')
@@ -50,23 +50,13 @@ function drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable) 
 }
 
 function transitionIn(circlesGroup) {
-    circlesGroup.transition().duration(duration)
-        .attr('opacity', 0.95);
+    circlesGroup.transition().duration(duration).attr('opacity', 0.95);
     return circlesGroup;
 };
 
 function transitionOut(circlesGroup) {
-    new Promise.all(circlesGroup.transition().duration(duration).attr('opacity', 0));
+    circlesGroup.transition().duration(duration).attr('opacity', 0)
     return circlesGroup;
-};
-
-function removeCircles() {
-    delayRemove();
-    d3.selectAll('.circle').remove();
-};
-
-function delayRemove() {
-    d3.transition().duration(duration);
 };
 
 // Data interaction.
@@ -98,29 +88,37 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
     d3.select('#selDataset').on('change', function() {
         // Sets region to selection and calls function to replot.
         let selectedRegion = dropdownMenu.property('value');
+        // let demoPanel = d3.select('#sp-demographics').html('');
 
         // If indicates state-level data. Else indicates city data for a selected state.
         if (selectedRegion === 'all-states') {
             dataset = statesData;
             circlesGroup = transitionOut(circlesGroup);
-            // removeCircles(circlesGroup);
+            removeCircles(circlesGroup);
+
             xLinearScale = xScale(dataset, xVariable);
             xAxis = renderX(xLinearScale, xAxis);
             yLinearScale = yScale(dataset, yVariable);
             yAxis = renderY(yLinearScale, yAxis);
             circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
-            transitionIn(circlesGroup);        
+            transitionIn(circlesGroup);     
+            // Demographics part.
+            // demoPanel.append('h3').text(`All States`)   
         } else {
             d3.json(`http://127.0.0.1:5000/api/cities/${selectedRegion}/`).then(data => {
                 dataset = data;
                 circlesGroup = transitionOut(circlesGroup);
-                // removeCircles(circlesGroup);
+                removeCircles(circlesGroup);
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
                 yAxis = renderY(yLinearScale, yAxis);
                 circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
                 transitionIn(circlesGroup);  
+                // Demographics part.
+                // demoPanel.append('h3').text(selectedRegion)
+                // demoPanel.append('p').text(`${statesData}`)
+                // console.log(statesData)
             })
         }
     });
@@ -134,6 +132,12 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
     const xHSDiplomaLabel = xGroup.append('text')
         .attr('x', 0).attr('y', 40).attr('value', 'PopulationWithHighSchoolDiploma')
         .classed('inactive', true).text('Population With High School Diploma');
+    const xBachelorLabel = xGroup.append('text')
+        .attr('x', 0).attr('y', 80).attr('value', 'PopulationWithBachelorsDegree')
+        .classed('inactive', true).text("Population With Bachelor's Degree");
+    const xAssociateLabel = xGroup.append('text')
+        .attr('x', 0).attr('y', 60).attr('value', 'PopulationWithAssociatesDegree')
+        .classed('inactive', true).text("Population With Associate's Degree");
     const yGroup = chartGroup
         .append('g')
     const yIncomeLabel = yGroup 
@@ -142,6 +146,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         .attr('value', 'PopulationWithHighSpeedInternet')
         .classed('active', true).text('Population With High Speed Internet');
 
+
     // Axis update listener.
     xGroup
         .selectAll('text')
@@ -149,10 +154,11 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             const xValue = d3
             .select(this)
             .attr('value');
+            selectedRegion = dropdownMenu.property('value');
             if (xValue !== xVariable) {
                 xVariable = xValue;
                 circlesGroup = transitionOut(circlesGroup);
-                // removeCircles(circlesGroup);
+                removeCircles(circlesGroup);
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
@@ -166,11 +172,49 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                     xIncomeLabel
                         .classed('active', false)
                         .classed('inactive', true);
+                    xBachelorLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                    xAssociateLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
                 } else if (xVariable === 'MedianIncome') {
                     xHSDiplomaLabel
                         .classed('active', false)
                         .classed('inactive', true);
                     xIncomeLabel
+                        .classed('active', true)
+                        .classed('inactive', false);
+                    xBachelorLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                    xAssociateLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                } else if (xVariable === 'PopulationWithBachelorsDegree') {
+                    xHSDiplomaLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                    xIncomeLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                    xBachelorLabel
+                        .classed('active', true)
+                        .classed('inactive', false);
+                    xAssociateLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                } else if (xVariable === 'PopulationWithAssociatesDegree') {
+                    xHSDiplomaLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                    xIncomeLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                    xBachelorLabel
+                        .classed('active', false)
+                        .classed('inactive', true);
+                    xAssociateLabel
                         .classed('active', true)
                         .classed('inactive', false);
                 }
