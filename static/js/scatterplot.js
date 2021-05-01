@@ -8,7 +8,8 @@ const svg = d3
     .append('svg')
     .attr('height', svgH)
     .attr('width', svgW)
-    .attr('style','border: 2px solid black; background-color:white'); 
+    .attr('style','border: 2px solid black; background-color:white');
+
 // Add chart group to the SVG.
 const chartGroup = svg
     .append('g')
@@ -93,6 +94,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         if (selectedRegion === 'all-states') {
             dataset = statesData;
             circlesGroup = transitionOut(circlesGroup);
+            removeCircles(circlesGroup);
+
             xLinearScale = xScale(dataset, xVariable);
             xAxis = renderX(xLinearScale, xAxis);
             yLinearScale = yScale(dataset, yVariable);
@@ -105,6 +108,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             d3.json(`http://127.0.0.1:5000/api/cities/${selectedRegion}/`).then(data => {
                 dataset = data;
                 circlesGroup = transitionOut(circlesGroup);
+                removeCircles(circlesGroup);
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
@@ -154,6 +158,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             if (xValue !== xVariable) {
                 xVariable = xValue;
                 circlesGroup = transitionOut(circlesGroup);
+                removeCircles(circlesGroup);
                 xLinearScale = xScale(dataset, xVariable);
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
