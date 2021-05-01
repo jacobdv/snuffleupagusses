@@ -3,6 +3,10 @@ body {
     margin: 0;
 }
   
+.underlined-header {
+    text-decoration: underline;
+}
+
 #map,
 body,
 html {
@@ -16,8 +20,9 @@ html {
 #map {
     border: 2px solid black;
     margin: 5%;
-    height: 90%;
-    width: 90%;
+    height: 70%;
+    width: 80%;
+    margin: 20px 11% 80px 11%;
 }
 
 #scatterplot {

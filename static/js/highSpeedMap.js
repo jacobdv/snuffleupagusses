@@ -139,7 +139,7 @@ function getCoords(state) {
     } else if (mapQuestData.results[0].locations[1].adminArea1 === 'US') {
       coords = [mapQuestData.results[0].locations[1].latLng.lat,mapQuestData.results[0].locations[1].latLng.lng]
     };
-    myMap.setView(new L.LatLng(coords[0],coords[1]), 5, {
+    myMap.setView(new L.LatLng(coords[0],coords[1]), 6, {
       animate: true, duration: 1.5
     })
   });

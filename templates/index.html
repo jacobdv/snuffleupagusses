@@ -54,17 +54,23 @@
 
                     <p></p>
                     <h3></h3>
-                    <p>The following visualizations explore the relationship between high-speed internet access and community measures such as median income, population, and education level. The folowing visualizations utilize internet speed data from the FCC and demographic information from the US Census.</p>
+                    <p>The following visualizations explore the relationship between high-speed internet access and community measures such as median income, population,
+                         and education level. The folowing visualizations utilize internet speed data from the FCC and demographic information from the US Census. High speed internet
+                         was defined as download speeds of 25 megabytes per second or greater, as set by the FCC.</p>
                 </div>
             </div>
-        </div>
+        </div><br><br>
         <div class='container'>
+            <h3 class='underlined-header'>High Speed Internet Access vs Median Income</h3>
+            <h6>Map Layers</h6>
+            <ul>
+                <li>High Speed Access: The total population with access to high speed internet in a given city.</li>
+                <li>Median Income: The median income for a city.</li>
+                <li>High Speed Internet Access Rate: The percentage of a city's population with access to high speed internet.</li>
+            </ul>
             <div class="row">
                 <div class="col-md-2">
                     <div class="well">
-
-                        <p></p>
-                        <h3>High Speed Internet Access vs Median Income</h3>
                         <h5>Select a Region:</h5>
                         <select id='mapDataset'>
                             <option value='all-states'>All States</option>
@@ -75,10 +81,11 @@
         </div>
         <div id='map'></div>
         <div class='container'>
+            <h3 class='underlined-header'>High Speed Internet Access vs Income and Education</h3>
+            <p></p>
             <div class="row">
                 <div class="col-md-2">
                     <div class="well">
-                        <h3>High Speed Internet Access vs Income and Education</h3>
                         <h5>Select a Region:</h5>
                         <select id='selDataset'>
                             <option value='all-states'>All States</option>
@@ -95,6 +102,8 @@
         </div>
         <!-- Div for Highcart Graph -->
         <figure class="highcharts-figure">
+            <h3 class='underlined-header'>State Education Breakdown</h3>
+            <p></p>
             <div id="container2"></div>
             <p class="highcharts-description">
                 *To see a complete chart of each state and their education levels, click on the hamburger menu (≡) at
