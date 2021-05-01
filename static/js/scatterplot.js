@@ -59,6 +59,10 @@ function transitionOut(circlesGroup) {
     return circlesGroup;
 };
 
+function removeCircles(circlesGroup) {
+    circlesGroup.remove()
+}
+
 // Data interaction.
 Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesData]) => {
     // Toggle for dataset.
@@ -154,7 +158,6 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             const xValue = d3
             .select(this)
             .attr('value');
-            selectedRegion = dropdownMenu.property('value');
             if (xValue !== xVariable) {
                 xVariable = xValue;
                 circlesGroup = transitionOut(circlesGroup);
