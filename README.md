@@ -1,6 +1,4 @@
-# Snuffleupagusses
-
-## Instructions to Run Snuffleupagusses API Flask App
+## Instructions to Run API Flask App
 - Clone repo to local computer
 - Create a config.js file in static/js
 - Get a MapBox Token and save in config.js as API_KEY :https://account.mapbox.com/
@@ -9,9 +7,7 @@
 - Open jupyter notebook and run the CSV_to_MongoDB.ipynb file to load Mongo database on local computer
 - Run app.py file in terminal
 
-## Project Summary
-
-### Snuffleupagusses Team Members
+### Team Members
 - Elizabeth Sanchez
 - Jacob de Vries
 - Pete Johnson
