@@ -178,16 +178,36 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   }
                 }; // usCityObject end bracket.
 
+                const hsiNewCity = L.circle(usCityObject.geometry.coordinates, {
+                  fillOpacity: 0.75,
+                  color: 'black',
+                  weight: 0.5,
+                  fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
+                  radius: hsiMarkerRadius(usCityObject.properties.highSpeed)
+                });
+                hsiNewCity.addTo(layers.HighSpeedAccess);
+                hsiNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
+    
+                const miNewCity = L.circle(usCityObject.geometry.coordinates, {
+                  fillOpacity: 0.75,
+                  color: 'black',
+                  weight: 0.5,
+                  fillColor: miMarkerColor(usCityObject.properties.medianIncome),
+                  radius: miMarkerRadius(usCityObject.properties.population)
+                });
+                miNewCity.addTo(layers.MedianIncome);
+                miNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: $${(usCityObject.properties.medianIncome).toFixed(2)}`);
+    
                 if (usCityObject.properties.accessRate < 1) {
-                  const arNewBigCity = L.circle(usCityObject.geometry.coordinates, {
+                  const arNewCity = L.circle(usCityObject.geometry.coordinates, {
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
                   fillColor: arMarkerColor(usCityObject.properties.medianIncome),
                   radius: arMarkerRadius(usCityObject.properties.accessRate)
                 });
-                arNewBigCity.addTo(layers.AccessRate);
-                arNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
+                arNewCity.addTo(layers.AccessRate);
+                arNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
               }
               }
             })
