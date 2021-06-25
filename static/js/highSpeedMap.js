@@ -214,8 +214,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
           });
         });
       myMap.addLayer(layers.AccessRate);
-      myMap.addLayer(layers.HighSpeedAccess);
-      myMap.addLayer(layers.MedianIncome);
+      myMap.removeLayer(layers.HighSpeedAccess);
+      myMap.removeLayer(layers.MedianIncome);
 
       //////////////////////
 
@@ -280,8 +280,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
       });
       getCoords(selection, myMap);
       myMap.addLayer(layers.AccessRate);
-      myMap.addLayer(layers.HighSpeedAccess);
-      myMap.addLayer(layers.MedianIncome);
+      myMap.removeLayer(layers.HighSpeedAccess);
+      myMap.removeLayer(layers.MedianIncome);
       } else {
         const filteredUSCities = [];
         // Filtering state data.
@@ -340,8 +340,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         });
         myMap.setView(new L.LatLng(39.8283, -98.5795), 4);
         myMap.addLayer(layers.AccessRate);
-        myMap.addLayer(layers.HighSpeedAccess);
-        myMap.addLayer(layers.MedianIncome);
+        myMap.removeLayer(layers.HighSpeedAccess);
+        myMap.removeLayer(layers.MedianIncome);
       }
     });
   });
