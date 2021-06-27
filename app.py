@@ -40,9 +40,9 @@ def stateData():
     return json.dumps(statesList, default = json_util.default)
 
 # API endpoint for api.html content.
-@app.route("/api")
-def index():
-    return render_template("api.html")
+# @app.route("/api")
+# def index():
+#     return render_template("api.html")
 
 # Do the thing. (:
 if __name__ == "__main__":

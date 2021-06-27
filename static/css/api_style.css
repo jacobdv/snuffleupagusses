@@ -1,0 +1,17 @@
+h1 {
+    text-align: center;
+    margin: .5em;
+}
+
+h5, h3 {
+    text-align: center;
+}
+
+p {
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+.analysis {
+    text-align: center;
+}
