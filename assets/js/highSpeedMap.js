@@ -121,7 +121,7 @@ const link = 'data/internet_census_combined.json'; // MongoDB route name for end
 
 d3.json(link).then(data => {
   console.log(data);
-  let i = 0;
-  
-  console.log(i)
+  for (let i = 0; Object.keys(data.City).length; i++) {
+    
+  }
 });
