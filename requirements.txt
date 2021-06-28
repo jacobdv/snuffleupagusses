@@ -1,6 +1,18 @@
-# This file may be used to creat an environment using:
-# $ conda create --name <env> --file <this file> python=3.6
-pandas=1.0.5=py36h47e9c7a_0
-pip=20.1.1=py36_1
-pymongo=3.9.0=py36ha925a31_0
-python=3.6.10=h9f7ef89_2
+census==0.8.17
+certifi==2020.12.5
+chardet==4.0.0
+click==7.1.2
+Flask==1.1.2
+Flask-Cors==3.0.10
+Flask-PyMongo==2.3.0
+idna==2.10
+itsdangerous==1.1.0
+Jinja2==2.11.3
+MarkupSafe==1.1.1
+pandas==1.0.3
+pymongo==3.9.0
+python-dateutil==2.7.0
+requests==2.25.1
+urllib3==1.26.4
+Werkzeug==1.0.1
+wincertstore==0.2
