@@ -35,6 +35,19 @@ const myMap = L.map('map', {
   scrollWheelZoom: false
 });
 
+// Legend
+var legend = L.control({position: 'bottomright'});
+legend.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'info legend'),
+  grades = [0,500,5000,10000,80000,200000,5000000];
+  for (var i = 0; i < grades.length; i++) {
+    div.innerHTML += '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+  }
+  return div;
+}; 
+
+
+
 // Adding dark map and creating maps and overlays labels for control panel.
 darkmap.addTo(myMap);
 const maps = {
@@ -72,6 +85,10 @@ function hsiMarkerRadius(population) {
   return (Math.sqrt(population) * 100)
 };
 
+function hsiMarkerRadiusOneState(population) {
+  return (Math.sqrt(population) * 50)
+};
+
 function hsiMarkerColor(population) {
     switch (true) {
       case population > 1000000 : return ('#084081');
@@ -92,6 +109,10 @@ function miMarkerRadius(medianIncome) {
   return (Math.sqrt(medianIncome) * 150)
 };
 
+function miMarkerRadiusOneState(medianIncome) {
+  return (Math.sqrt(medianIncome) * 75)
+};
+
 function miMarkerColor(medianIncome) {
     switch (true) {
       case medianIncome > 100000 : return ('#7f0000');
@@ -110,6 +131,10 @@ function miMarkerColor(medianIncome) {
 // Function for AccessRate marker radius.
 function arMarkerRadius(accessRate) {
   return (accessRate * 45000)
+};
+
+function arMarkerRadiusOneState(accessRate) {
+  return (accessRate * 22500)
 };
 
 function arMarkerColor(accessRate) {
@@ -249,8 +274,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
-              fillColor: hsiMarkerColor(cityObject.properties.highSpeed),
-              radius: hsiMarkerRadius(cityObject.properties.highSpeed)
+              fillColor: siMarkerColor(cityObject.properties.highSpeed),
+              radius: hsiMarkerRadiusOneState(cityObject.properties.highSpeed)
             });
             hsiNewCity.addTo(layers.HighSpeedAccess);
             hsiNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
@@ -260,7 +285,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               color: 'black',
               weight: 0.5,
               fillColor: miMarkerColor(cityObject.properties.medianIncome),
-              radius: miMarkerRadius(cityObject.properties.population)
+              radius: miMarkerRadiusOneState(cityObject.properties.population)
             });
             miNewCity.addTo(layers.MedianIncome);
             miNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: $${(cityObject.properties.medianIncome).toFixed(2)}`);
@@ -271,7 +296,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               color: 'black',
               weight: 0.5,
               fillColor: arMarkerColor(cityObject.properties.medianIncome),
-              radius: arMarkerRadius(cityObject.properties.accessRate)
+              radius: arMarkerRadiusOneState(cityObject.properties.accessRate)
             });
             arNewCity.addTo(layers.AccessRate);
             arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate).toFixed(2)) * 100}%`);
