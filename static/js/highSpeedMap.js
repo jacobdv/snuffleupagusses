@@ -35,19 +35,6 @@ const myMap = L.map('map', {
   scrollWheelZoom: false
 });
 
-// Legend
-var legend = L.control({position: 'bottomright'});
-legend.onAdd = function (map) {
-  var div = L.DomUtil.create('div', 'info legend'),
-  grades = [0,500,5000,10000,80000,200000,5000000];
-  for (var i = 0; i < grades.length; i++) {
-    div.innerHTML += '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-  }
-  return div;
-}; 
-
-
-
 // Adding dark map and creating maps and overlays labels for control panel.
 darkmap.addTo(myMap);
 const maps = {
