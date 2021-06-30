@@ -20,15 +20,11 @@ h5 {
     margin-top: 1em;
 }
 
-p {
+.analysis {
     text-align: center;
     margin-left: 7em;
     margin-right: 7em;
     margin-bottom: 2em;
-}
-
-.analysis {
-    text-align: center;
 }
 
 .row {
@@ -47,12 +43,21 @@ hr {
     width: 80%;
   }
 
+  .endpoint {
+      background-color: white;
+      text-align: center;
+      padding: 7px;
+      margin-top: .5em;
+      margin-left: 5em;
+      margin-right: 5em;
+  }
+
   @media (max-width: 991px) {
     .center {
         display: block;
         margin-left: auto;
         margin-right: auto;
-        width: 50%;
+        width: 70%;
       }
 
   }
