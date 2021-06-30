@@ -44,19 +44,25 @@
         </style>
     <body>
 
-        <h1> New Title Here </h1>
+
         <hr>
         <!-- Divs for Visualizations -->
         <div class='container'>
             <div class="row">
                 <div class='col-md-12 jumbotron text-center'>
-                    <h2>High Speed Internet Analysis</h2>
+                  <h2>High Speed Internet Access</h2>
 
-                    <p></p>
-                    <h3></h3>
-                    <p>The following visualizations explore the relationship between high-speed internet access and community measures such as median income, population,
-                         and education level. The folowing visualizations utilize internet speed data from the FCC and demographic information from the US Census. High speed internet
-                         was defined as download speeds of 25 megabytes per second or greater, which is the FCC limit for broadband internet.</p>
+                  <p></p>
+                  <h3></h3>
+                  <p>The events of the last year have shown us how important high speed internet access is in modern society. With many people working from home,
+                     e-learning for students and countless social events changed from in-person to virtual, we have come to appreciate the value
+                      of a reliable internet connection. This begs the question, who has access to this valuable resource?</p>
+                  <p>The following visualizations explore the relationship between high speed internet access and community measures such as median income, population,
+                       and education level. Internet speed data was sourced from the FCC and demographic information from the US Census. High speed internet
+                       was defined as download speeds of 25 megabytes per second or greater, which is the FCC limit for broadband internet.</p>
+                  <p>As demonstrated by the visualizations below, the greatest indicator we measured of increased access to high speed internet
+                     is an increase in educated population. There is a strong correlation between populations with higher education levels
+                      and increased high speed internet access.</p>
                 </div>
             </div>
         </div><br><br>
@@ -110,6 +116,45 @@
                 the top right corner of the graph and select 'View Data Table'.
             </p>
         </figure>
+        <!-- Methodology and Data -->
+        <div class='container'>
+            <div class="row">
+                <div class='col-md-12 jumbotron text-center'>
+                    <h2>Methodology and Data</h2>
+                    <hr>
+                    <p></p>
+                    <h4>Data Sources</h4>
+
+                      <p>
+                        <a href="https://opendata.fcc.gov/Wireline/Geography-Lookup-Table/v5vt-e7vw">Latitude / Longitude Data</a>
+                      </p>
+                      <p>
+                        <a href="https://opendata.fcc.gov/Wireline/Area-Table-June-2020-V1/ktav-pdj7">Internet Speed Data</a>
+                      </p>
+                      <p>
+                        <a href="https://simplemaps.com/data/us-zips">Zipcode Data</a>
+                      </p>
+                      <p>
+                        <a href="https://www.census.gov/data/developers/guidance/api-user-guide.html">Community Measures</a>
+                      </p>
+
+                    <p></p>
+                    <h4>Methodology</h4>
+
+                    <p></p>
+                    <p>FCC data was used to get information on high speed internet access and geographical information
+                      (city, lat, lon). Demographic information was pulled from the Census API.
+                      Due to difficulties pulling Census data by city name and state, zipcode data was pulled in to
+                      match up demographic data with the internet and geographical data.</p>
+                    <p>The ETL processes were completed using Python in Jupyter Notebooks. The cleaned data
+                      was loaded into a
+                      <a href="https://cloud.mongodb.com/v2/60d64f59ec47a60cec703da5#metrics/replicaSet/60d650621195fe70b9b9946e/explorer/Census_Data/Cities/find">MongoDB database</a>
+                     Visualizations were created using <a href="https://leafletjs.com/examples/quick-start/">Leaflet</a>
+                     and <a href="https://www.highcharts.com/demo/bar-stacked">Highcharts</a></p>
+                     <p>For more information about this project, visit the github repo <a href="https://github.com/jacobdv/snuffleupagusses">here.</a></p>
+                </div>
+            </div>
+        </div><br><br>
 
         <!-- D3 Script -->
         <script src="https://d3js.org/d3.v5.min.js"></script>
