@@ -22,7 +22,7 @@ html {
     margin: 5%;
     height: 70%;
     width: 80%;
-    margin: 20px 11% 90px 11%;
+    margin: 20px 11% 30px 11%;
 }
 
 #scatterplot {
@@ -71,40 +71,21 @@ html {
     background: #f1f7ff;
 }
 
-
-
-.legend .legend-title {
-    text-align: left;
-    margin-bottom: 8px;
-    font-weight: bold;
-    font-size: 90%;
+/* Legend */
+span {
+    display: block;
+    float: left;
+    height: 30px;
+    width: 75px;
+    margin: 0px 7px 0px 0px;
+    padding: 0;
 }
-.legend .legendThird ul {
+.legendLabels {
+    list-style: none;
     margin: 0;
     padding: 0;
-    float: left;
-    list-style: none;
 }
-.legend .legendThird ul li {
-    display: block;
-    float: left;
-    width: 25%;
-    margin-bottom: 6px;
-    text-align: center;
-    font-size: 80%;
-    list-style: none;
-}
-.legend ul.legendLabels li span {
-    display: block;
-    float: left;
-    height: 15px;
-    width: 50px;
-}
-.legend .legend-source {
-    font-size: 70%;
-    color: #999;
-    clear: both;
-}
-.legend a {
-    color: #777;
+#legend {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
