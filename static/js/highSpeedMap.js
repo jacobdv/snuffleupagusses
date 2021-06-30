@@ -199,7 +199,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                 });
                 hsiNewCity.addTo(layers.HighSpeedAccess);
                 hsiNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
-    
+
                 const miNewCity = L.circle(usCityObject.geometry.coordinates, {
                   fillOpacity: 0.75,
                   color: 'black',
@@ -209,7 +209,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                 });
                 miNewCity.addTo(layers.MedianIncome);
                 miNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: $${(usCityObject.properties.medianIncome).toFixed(2)}`);
-    
+
                 if (usCityObject.properties.accessRate < 1) {
                   const arNewCity = L.circle(usCityObject.geometry.coordinates, {
                   fillOpacity: 0.75,
@@ -261,7 +261,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
-              fillColor: siMarkerColor(cityObject.properties.highSpeed),
+              fillColor: hsiMarkerColor(cityObject.properties.highSpeed),
               radius: hsiMarkerRadiusOneState(cityObject.properties.highSpeed)
             });
             hsiNewCity.addTo(layers.HighSpeedAccess);
