@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, url_for, jsonify, request
 from flask_pymongo import PyMongo
 from flask_cors import CORS
 from census import Census
+import pymongo
 
 # Additional tools for API routes.
 import json
@@ -14,11 +15,13 @@ app = Flask(__name__)
 CORS(app)
 
 # Connections to both collections in MongoDB.
-app.config["DEBUG"] = True
-app.config["MONGO_URI"] = "mongodb://localhost:27017/Census_Data"
+client = pymongo.MongoClient(f'mongodb+srv://readonly:{atlasPW}@cluster0.6oig2.mongodb.net/test?authSource=admin&replicaSet=atlas-aont1m-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true')
+db = client['Census_Data']
+app.config['DEBUG'] = True
+app.config['MONGO_URI'] = f'mongodb+srv://readonly:{atlasPW}@cluster0.6oig2.mongodb.net/test?authSource=admin&replicaSet=atlas-aont1m-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true'
 mongo = PyMongo(app)
-citiesCollection = mongo.db.Cities
-statesCollection = mongo.db.States
+citiesCollection = db['Cities']
+statesCollection = db['States']
 
 # Home route that displays index.html content.
 @app.route("/")
