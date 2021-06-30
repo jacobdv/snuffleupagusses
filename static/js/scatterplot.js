@@ -69,7 +69,7 @@ function removeCircles(circlesGroup) {
 function updateToolTip(chosenXAxis, circlesGroup) {
   const toolTip = d3.tip()
     .attr("class", "tooltip")
-    .offset([80, -60])
+    .offset([-5, 60])
     .html(d => {
       if (d.City) {
         return `${d.City}: ${d[chosenXAxis]}`

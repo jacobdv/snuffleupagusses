@@ -70,3 +70,14 @@ html {
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
 }
+
+.tooltip {
+    position: absolute;
+    width: auto;
+    height: auto;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    background: #1a24af;
+    border-radius: 10px;
+  }
