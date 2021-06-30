@@ -22,7 +22,8 @@ html {
     margin: 5%;
     height: 70%;
     width: 80%;
-    margin: 20px 11% 90px 11%;
+    margin: 20px 11% 30px 11%;
+
 }
 
 #scatterplot {
@@ -69,4 +70,40 @@ html {
 }
 .highcharts-data-table tr:hover {
     background: #f1f7ff;
+}
+
+/* Legend */
+span {
+    position: absolute;
+    float: left;
+    height: 30px;
+    width: 75px;
+    margin: 0;
+    padding: 0;
+}
+.legendLabels {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+#legend {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.legendLabels p {
+    padding: 0;
+    margin: 0 0 0 80px;
+    color: black;
+}
+.legendLabels li {
+    height: 30px;
+}
+.units {
+    color: black;
+    padding: 0;
+    margin: 0;
+}
+.legendThird h5 {
+    margin: 0;
+    padding: 0;
 }
