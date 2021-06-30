@@ -23,6 +23,7 @@ html {
     height: 70%;
     width: 80%;
     margin: 20px 11% 30px 11%;
+
 }
 
 #scatterplot {
@@ -88,4 +89,5 @@ span {
 #legend {
     margin-top: 30px;
     margin-bottom: 30px;
+
 }
