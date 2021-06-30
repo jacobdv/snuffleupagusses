@@ -25,6 +25,11 @@ statesCollection = mongo.db.States
 def index():
     return render_template("index.html")
 
+# API endpoint for api.html content.
+# @app.route("/api")
+# def index():
+#     return render_template("api.html")
+
 # API endpoint for cities in an individual state, defaulting to Oregon.
 @app.route("/api/cities/", defaults={'state': 'OR'})
 @app.route("/api/cities/<state>/", methods=['GET', 'POST'])
@@ -38,11 +43,6 @@ def stateData():
     # Creates a list from the collection and uses json_util to return this result.
     statesList = list(statesCollection.find())
     return json.dumps(statesList, default = json_util.default)
-
-# API endpoint for api.html content.
-@app.route("/api")
-def index():
-    return render_template("api.html")
 
 # Do the thing. (:
 if __name__ == "__main__":
