@@ -81,10 +81,11 @@
         </div>
         <div id='map'></div>
         <div class='container' id='legend'>
-            <div class='row' class='legend-title'>
-                <h3>Map Legends</h3>
-                <div id='hsiLegend' class='col-4 legendThird'>
+            <div class='row'>
+                <h3>Map Color Legends</h3>
+                <div id='hsiLegend' class='col-md-4 col-sm-12 legendThird'>
                     <h5>High Speed Internet</h5>
+                    <p class='units'>(population with access)</p>
                     <ul class='legendLabels'>
                         <li><span style='background:#ffffff;'></span><p>0-10000</p></li>
                         <li><span style='background:#f7fcf0;'></span><p>10000</p></li>
@@ -98,8 +99,9 @@
                         <li><span style='background:#084081;'></span><p>1000000+</p></li>
                     </ul>
                 </div>
-                <div id='miLegend' class='col-4 legendThird'>
+                <div id='miLegend' class='col-md-4 col-sm-12 legendThird'>
                     <h5>Median Income</h5>
+                    <p class='units'>(in USD)</p>
                     <ul class='legendLabels'>
                         <li><span style='background:#ffffff;'></span><p>0-20000</p></li>
                         <li><span style='background:#fff7ec;'></span><p>20000</p></li>
@@ -113,20 +115,36 @@
                         <li><span style='background:#7f0000;'></span><p>100000+</p></li>
                     </ul>
                 </div>
-                <div id='hsiarLegend' class='col-4 legendThird'>
+                <div id='hsiarLegend' class='col-md-4 col-sm-12 legendThird'>
                     <h5>Access Rate</h5>
+                    <p class='units'>(percentage of population with access)</p>
                     <ul class='legendLabels'>
-                        <li><span style='background:#ffffff;'></span><p>0-20000</p></li>
-                        <li><span style='background:#fcfbfd;'></span><p>20000</p></li>
-                        <li><span style='background:#efedf5;'></span><p>30000</p></li>
-                        <li><span style='background:#dadaeb;'></span><p>40000</p></li>
-                        <li><span style='background:#bcbddc;'></span><p>50000</p></li>
-                        <li><span style='background:#9e9ac8;'></span><p>60000</p></li>
-                        <li><span style='background:#807dba;'></span><p>70000</p></li>
-                        <li><span style='background:#6a51a3;'></span><p>80000</p></li>
-                        <li><span style='background:#54278f;'></span><p>90000</p></li>
-                        <li><span style='background:#3f007d;'></span><p>100000+</p></li>
+                        <li><span style='background:#ffffff;'></span><p>0-10</p></li>
+                        <li><span style='background:#fcfbfd;'></span><p>10</p></li>
+                        <li><span style='background:#efedf5;'></span><p>20</p></li>
+                        <li><span style='background:#dadaeb;'></span><p>30</p></li>
+                        <li><span style='background:#bcbddc;'></span><p>40</p></li>
+                        <li><span style='background:#9e9ac8;'></span><p>50</p></li>
+                        <li><span style='background:#807dba;'></span><p>60</p></li>
+                        <li><span style='background:#6a51a3;'></span><p>70</p></li>
+                        <li><span style='background:#54278f;'></span><p>80</p></li>
+                        <li><span style='background:#3f007d;'></span><p>90+</p></li>
                     </ul>
+                </div>
+            </div>
+            <div class='row'>
+                <h3>Circle Radius Legend</h3>
+                <div id='natCircleRadiusLegend' class='col-12'>
+                    <h5>When Looking at the Whole Country</h5>
+                    <div>
+                        
+                    </div>
+                </div>
+                <div id='stCircleRadiusLegend' class='col-12'>
+                    <h5>When Looking at Individual States</h5>
+                    <div>
+                        
+                    </div>
                 </div>
             </div>
         </div>

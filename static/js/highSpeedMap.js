@@ -93,12 +93,12 @@ function hsiMarkerColor(population) {
 
 // Function for MedianIncome marker radius.
 function miMarkerRadius(medianIncome) {
-  return (Math.sqrt(medianIncome) * 150)
+  return (Math.sqrt(medianIncome) * 100)
 };
 
 
 function miMarkerRadiusOneState(medianIncome) {
-  return (Math.sqrt(medianIncome) * 75)
+  return (Math.sqrt(medianIncome) * 50)
 };
 
 function miMarkerColor(medianIncome) {
@@ -118,24 +118,24 @@ function miMarkerColor(medianIncome) {
 
 // Function for AccessRate marker radius.
 function arMarkerRadius(accessRate) {
-  return (accessRate * 45000)
+  return (Math.sqrt(accessRate) * 100)
 };
 
 function arMarkerRadiusOneState(accessRate) {
-  return (accessRate * 22500)
+  return (Math.sqrt(accessRate) * 50)
 };
 
 function arMarkerColor(accessRate) {
     switch (true) {
-      case accessRate > 100000 : return ('#3f007d');
-      case accessRate > 90000 : return ('#54278f');
-      case accessRate > 80000 : return ('#6a51a3');
-      case accessRate > 70000 : return ('#807dba');
-      case accessRate > 60000 : return ('#9e9ac8');
-      case accessRate > 50000 : return ('#bcbddc');
-      case accessRate > 40000 : return ('#dadaeb');
-      case accessRate > 30000 : return ('#efedf5');
-      case accessRate > 20000 : return ('#fcfbfd');
+      case accessRate > .9 : return ('#3f007d');
+      case accessRate > .8 : return ('#54278f');
+      case accessRate > .7 : return ('#6a51a3');
+      case accessRate > .6 : return ('#807dba');
+      case accessRate > .5 : return ('#9e9ac8');
+      case accessRate > .4 : return ('#bcbddc');
+      case accessRate > .3 : return ('#dadaeb');
+      case accessRate > .2 : return ('#efedf5');
+      case accessRate > .1 : return ('#fcfbfd');
       default : return ('#ffffff');
     }
 };
@@ -196,7 +196,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
-                  radius: hsiMarkerRadius(usCityObject.properties.highSpeed)
+                  radius: hsiMarkerRadius(usCityObject.properties.population)
                 });
                 hsiNewCity.addTo(layers.HighSpeedAccess);
                 hsiNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
@@ -216,8 +216,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
-                  fillColor: arMarkerColor(usCityObject.properties.medianIncome),
-                  radius: arMarkerRadius(usCityObject.properties.accessRate)
+                  fillColor: arMarkerColor(usCityObject.properties.accessRate),
+                  radius: arMarkerRadius(usCityObject.properties.population)
                 });
                 arNewCity.addTo(layers.AccessRate);
                 arNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
@@ -263,7 +263,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               color: 'black',
               weight: 0.5,
               fillColor: hsiMarkerColor(cityObject.properties.highSpeed),
-              radius: hsiMarkerRadiusOneState(cityObject.properties.highSpeed)
+              radius: hsiMarkerRadiusOneState(cityObject.properties.population)
             });
             hsiNewCity.addTo(layers.HighSpeedAccess);
             hsiNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
@@ -283,8 +283,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
-              fillColor: arMarkerColor(cityObject.properties.medianIncome),
-              radius: arMarkerRadiusOneState(cityObject.properties.accessRate)
+              fillColor: arMarkerColor(cityObject.properties.accessRate),
+              radius: arMarkerRadiusOneState(cityObject.properties.population)
             });
             arNewCity.addTo(layers.AccessRate);
             arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate).toFixed(2)) * 100}%`);
@@ -321,7 +321,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
-                  radius: hsiMarkerRadius(usCityObject.properties.highSpeed)
+                  radius: hsiMarkerRadius(usCityObject.properties.population)
                 });
                 hsiNewBigCity.addTo(layers.HighSpeedAccess);
                 hsiNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
@@ -341,8 +341,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
-                  fillColor: arMarkerColor(usCityObject.properties.medianIncome),
-                  radius: arMarkerRadius(usCityObject.properties.accessRate)
+                  fillColor: arMarkerColor(usCityObject.properties.accessRate),
+                  radius: arMarkerRadius(usCityObject.properties.population)
                 });
                 arNewBigCity.addTo(layers.AccessRate);
                 arNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
