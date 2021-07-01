@@ -72,9 +72,9 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     .offset([-5, 60])
     .html(d => {
       if (d.City) {
-        return `${d.City}: ${d[chosenXAxis].toLocaleString('en-IN', {maximumFractionDigits: 2})}`
+        return `${d.City}: ${d[chosenXAxis].toLocaleString('en-US', {maximumFractionDigits: 0})}`
       } else {
-        return `${d.state}: ${d[chosenXAxis].toLocaleString('en-IN', {maximumFractionDigits: 2})}`
+        return `${d.state}: ${d[chosenXAxis].toLocaleString('en-US', {maximumFractionDigits: 0})}`
       }
     });
 
