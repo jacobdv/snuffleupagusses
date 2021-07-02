@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/css/api_style.css">
+
+    <title>API Homepage</title>
+  </head>
+  <body>
+    <h1>API Homepage</h1>
+    <hr>
+    <h3>Explanation</h3>
+    <p class="analysis">The demographic information came from the US Census API. The important information we pulled was
+      the total population, median income, education levels, and population with access to high-speed
+      internet. The education levels we focused on was the percentage of the population with a high school
+      diploma, population with an associate’s degree, and population with a bachelor's degree.</p>
+      <hr>
+    <h3>Data Structure</h3>
+    <p class="analysis">This graphics below show the structure of our demographic end points.
+    </p>
+    <hr>
+    <div class="row">
+      <div class="col-lg-6 col-sm-12">
+        <h5>States Demographics</h5>
+        <a href="/api/states/">
+          <img class="link_image center" src="../static\images\statesEndpoint.PNG" alt="Endpoint of States Demorgaphic Data">
+        </a>
+        <br>
+        <p class="endpoint">To access the endpoint for all 50 states, simply add <i><b>/api/states/</b></i> to the end of the URL.</p>
+      </div>
+      <div class="col-lg-6 col-sm-12">
+        <h5>Cities Demographics</h5>
+        <a href="/api/cities/">
+          <img class="link_image center" src="../static\images\citiesEndpoint.PNG" alt="Endpoint of Cities Demorgaphic Data">
+        </a>
+        <br>
+        <p class="endpoint">To access the endpoints for each state's individual cities, simply add <i><b>/api/cities/stateabbreviation</b></i> (e.g. for all cities in Oregon: <i><b>/api/cities/OR</b></i>) to the end of the URL.</p>
+      </div>
+    </div>
+  </body>
+</html>
