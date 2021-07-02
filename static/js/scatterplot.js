@@ -45,7 +45,10 @@ function drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable) 
         .attr('cy', d => yLinearScale(d[yVariable]))
         .attr('r', 5).attr('fill', 'cornflowerblue')
         .attr('class','circle')
-        .attr('opacity', 0).attr('stroke', 'black').attr('stroke-width', 0.75);
+        .attr('opacity', 0).attr('stroke', 'black').attr('stroke-width', 0.75)
+
+    circlesGroup = updateToolTip(xVariable, circlesGroup);
+
     return circlesGroup;
 }
 
@@ -61,6 +64,37 @@ function transitionOut(circlesGroup) {
 
 function removeCircles(circlesGroup) {
     circlesGroup.remove()
+}
+
+function updateToolTip(chosenXAxis, circlesGroup) {
+  const toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .offset([-5, 60])
+    .html(d => {
+      let options = {maximumFractionDigits: 0}
+      if (chosenXAxis === "MedianIncome") {
+        options.style = 'currency'
+        options.currency = 'USD'
+      }
+      if (d.City) {
+        return `${d.City}: ${d[chosenXAxis].toLocaleString('en-US', options)}`
+      } else {
+        return `${d.state}: ${d[chosenXAxis].toLocaleString('en-US', options)}`
+      }
+    });
+
+  circlesGroup.call(toolTip);
+
+  circlesGroup.on("mouseover", function(data) {
+    // console.log(data)
+      toolTip.show(data);
+    })
+    // onmouseout event
+    .on("mouseout", function(data) {
+      toolTip.hide(data);
+    });
+
+  return circlesGroup;
 }
 
 // Data interaction.
@@ -104,10 +138,10 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             xAxis = renderX(xLinearScale, xAxis);
             yLinearScale = yScale(dataset, yVariable);
             yAxis = renderY(yLinearScale, yAxis);
-            circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
-            transitionIn(circlesGroup);     
+            circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);
+            transitionIn(circlesGroup);
             // Demographics part.
-            // demoPanel.append('h3').text(`All States`)   
+            // demoPanel.append('h3').text(`All States`)
         } else {
             d3.json(`http://127.0.0.1:5000/api/cities/${selectedRegion}/`).then(data => {
                 dataset = data;
@@ -117,8 +151,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
                 yAxis = renderY(yLinearScale, yAxis);
-                circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
-                transitionIn(circlesGroup);  
+                circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);
+                transitionIn(circlesGroup);
                 // Demographics part.
                 // demoPanel.append('h3').text(selectedRegion)
                 // demoPanel.append('p').text(`${statesData}`)
@@ -144,7 +178,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         .classed('inactive', true).text("Population With Associate's Degree");
     const yGroup = chartGroup
         .append('g')
-    const yIncomeLabel = yGroup 
+    const yIncomeLabel = yGroup
         .append('text').attr('transform', 'rotate(-90)')
         .attr('x', -(chartH/2)).attr('y', -70)
         .attr('value', 'PopulationWithHighSpeedInternet')
@@ -166,8 +200,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                 xAxis = renderX(xLinearScale, xAxis);
                 yLinearScale = yScale(dataset, yVariable);
                 yAxis = renderY(yLinearScale, yAxis);
-                circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);  
-                transitionIn(circlesGroup);              
+                circlesGroup = drawCircles(xLinearScale, yLinearScale, dataset, xVariable, yVariable);
+                transitionIn(circlesGroup);
                 if (xVariable === 'PopulationWithHighSchoolDiploma') {
                     xHSDiplomaLabel
                         .classed('active', true)
@@ -221,6 +255,6 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                         .classed('active', true)
                         .classed('inactive', false);
                 }
-            }        
+            }
         })
 }).catch(error => console.log(error));
