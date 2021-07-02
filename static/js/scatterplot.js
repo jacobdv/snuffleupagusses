@@ -71,17 +71,22 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     .attr("class", "tooltip")
     .offset([-5, 60])
     .html(d => {
+      let options = {maximumFractionDigits: 0}
+      if (chosenXAxis === "MedianIncome") {
+        options.style = 'currency'
+        options.currency = 'USD'
+      }
       if (d.City) {
-        return `${d.City}: ${d[chosenXAxis].toLocaleString('en-US', {maximumFractionDigits: 0})}`
+        return `${d.City}: ${d[chosenXAxis].toLocaleString('en-US', options)}`
       } else {
-        return `${d.state}: ${d[chosenXAxis].toLocaleString('en-US', {maximumFractionDigits: 0})}`
+        return `${d.state}: ${d[chosenXAxis].toLocaleString('en-US', options)}`
       }
     });
 
   circlesGroup.call(toolTip);
 
   circlesGroup.on("mouseover", function(data) {
-    console.log(data)
+    // console.log(data)
       toolTip.show(data);
     })
     // onmouseout event
