@@ -5,6 +5,9 @@ from flask_cors import CORS
 from census import Census
 import pymongo
 
+import os
+
+
 # Additional tools for API routes.
 import json
 from bson import json_util
@@ -15,6 +18,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connections to both collections in MongoDB.
+atlasPW = os.environ['atlasPW']
 client = pymongo.MongoClient(f'mongodb+srv://readonly:{atlasPW}@cluster0.6oig2.mongodb.net/test?authSource=admin&replicaSet=atlas-aont1m-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true')
 db = client['Census_Data']
 app.config['DEBUG'] = True
