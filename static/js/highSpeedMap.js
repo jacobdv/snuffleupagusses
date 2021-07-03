@@ -173,6 +173,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         // Filtering state data.
         statesData.forEach(state => {
           d3.json(`https://high-speed-internet.herokuapp.com/api/cities/${state.state}/`).then(state => {
+
             state.forEach(c => {
               if (c.Population > 5000) {
                 let usCityObject = {
@@ -195,7 +196,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
-                  radius: hsiMarkerRadius(usCityObject.properties.highSpeed)
+                  radius: hsiMarkerRadius(usCityObject.properties.population)
                 });
                 hsiNewCity.addTo(layers.HighSpeedAccess);
                 hsiNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
@@ -215,8 +216,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
-                  fillColor: arMarkerColor(usCityObject.properties.medianIncome),
-                  radius: arMarkerRadius(usCityObject.properties.accessRate)
+                  fillColor: arMarkerColor(usCityObject.properties.accessRate),
+                  radius: arMarkerRadius(usCityObject.properties.population)
                 });
                 arNewCity.addTo(layers.AccessRate);
                 arNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
@@ -262,7 +263,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               color: 'black',
               weight: 0.5,
               fillColor: hsiMarkerColor(cityObject.properties.highSpeed),
-              radius: hsiMarkerRadiusOneState(cityObject.properties.highSpeed)
+              radius: hsiMarkerRadiusOneState(cityObject.properties.population)
             });
             hsiNewCity.addTo(layers.HighSpeedAccess);
             hsiNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
@@ -282,8 +283,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               fillOpacity: 0.75,
               color: 'black',
               weight: 0.5,
-              fillColor: arMarkerColor(cityObject.properties.medianIncome),
-              radius: arMarkerRadiusOneState(cityObject.properties.accessRate)
+              fillColor: arMarkerColor(cityObject.properties.accessRate),
+              radius: arMarkerRadiusOneState(cityObject.properties.population)
             });
             arNewCity.addTo(layers.AccessRate);
             arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate).toFixed(2)) * 100}%`);
@@ -320,7 +321,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
-                  radius: hsiMarkerRadius(usCityObject.properties.highSpeed)
+                  radius: hsiMarkerRadius(usCityObject.properties.population)
                 });
                 hsiNewBigCity.addTo(layers.HighSpeedAccess);
                 hsiNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
@@ -340,8 +341,8 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   fillOpacity: 0.75,
                   color: 'black',
                   weight: 0.5,
-                  fillColor: arMarkerColor(usCityObject.properties.medianIncome),
-                  radius: arMarkerRadius(usCityObject.properties.accessRate)
+                  fillColor: arMarkerColor(usCityObject.properties.accessRate),
+                  radius: arMarkerRadius(usCityObject.properties.population)
                 });
                 arNewBigCity.addTo(layers.AccessRate);
                 arNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
