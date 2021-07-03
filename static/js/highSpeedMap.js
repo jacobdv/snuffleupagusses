@@ -143,7 +143,7 @@ function getCoords(state) {
 Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesData]) => {
     // Adding dropdown content.
     let mapDropdown = d3.select('#mapDataset');
-    let stateArray;
+    let stateArray = [];
     statesData.forEach(state => {
       stateArray.push(state.state);
     });
