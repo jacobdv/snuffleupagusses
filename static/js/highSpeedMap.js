@@ -149,7 +149,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
     });
     stateArray.sort();
     stateArray.forEach(state => {
-      mapDropdown.append('option').text(state.state).attr('value',state.state);
+      mapDropdown.append('option').text(state).attr('value',state);
     });
 
     //////////////////////////
