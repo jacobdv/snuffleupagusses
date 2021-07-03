@@ -17,16 +17,13 @@ app = Flask(__name__)
 CORS(app)
 
 # Connections to both collections in MongoDB.
-client = pymongo.MongoClient(os.environ['MONGO_URI'])
+client = pymongo.MongoClient(os.environ['MONGO_URI'], ssl=True,ssl_cert_reqs='CERT_NONE')
 db = client['Census_Data']
 app.config['DEBUG'] = True
 app.config['MONGO_URI'] = os.environ['MONGO_URI']
 mongo = PyMongo(app)
 citiesCollection = db['Cities']
 statesCollection = db['States']
-print(db)
-print(citiesCollection)
-print(statesCollection)
 
 # Home route that displays index.html content.
 @app.route("/")
