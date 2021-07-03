@@ -29,7 +29,8 @@ statesCollection = db['States']
 # Home route that displays index.html content.
 @app.route("/")
 def index():
-    return render_template("index.html")
+    data = { 'API_KEY':os.environ['API_KEY'], 'mapQuestKey':os.environ['mapQuestKey'] }
+    return render_template("index.html", data=data)
 
 # API endpoint for api.html content.
 @app.route("/api")
