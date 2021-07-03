@@ -22,7 +22,7 @@ html {
     margin: 5%;
     height: 70%;
     width: 80%;
-    margin: 20px 11% 90px 11%;
+    margin: 20px 11% 15px 11%;
 }
 
 #scatterplot {
@@ -97,7 +97,7 @@ html {
     padding: 0;
 }
 #snufLegend {
-    margin-top: 15px;
+    margin-top: 0px;
     margin-bottom: 30px;
 }
 .snufLegendLabels p {
