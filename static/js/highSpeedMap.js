@@ -172,7 +172,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
     const filteredUSCities = [];
         // Filtering state data.
         statesData.forEach(state => {
-          d3.json(`http://127.0.0.1:5000/api/cities/${state.state}/`).then(state => {
+          d3.json(`https://high-speed-internet.herokuapp.com/api/cities/${state.state}/`).then(state => {
             state.forEach(c => {
               if (c.Population > 5000) {
                 let usCityObject = {
@@ -239,7 +239,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
       clearMap(layers.AccessRate);
 
       if (selection !== 'all-states') {
-        d3.json(`http://127.0.0.1:5000/api/cities/${selection}/`).then(data => {
+        d3.json(`https://high-speed-internet.herokuapp.com/api/cities/${selection}/`).then(data => {
           citiesData = data;
           citiesData.forEach(c => {
             let cityObject = {
@@ -298,7 +298,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
         const filteredUSCities = [];
         // Filtering state data.
         statesData.forEach(state => {
-          d3.json(`http://127.0.0.1:5000/api/cities/${state.state}/`).then(state => {
+          d3.json(`https://high-speed-internet.herokuapp.com/api/cities/${state.state}/`).then(state => {
             state.forEach(c => {
               if (c.Population > 5000) {
                 let usCityObject = {
