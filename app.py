@@ -17,7 +17,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connections to both collections in MongoDB.
-client = pymongo.MongoClient(os.environ['MONGO_URI'], ssl=True,ssl_cert_reqs='CERT_NONE')
+client = pymongo.MongoClient(os.environ['MONGO_URI'])
 db = client['Census_Data']
 app.config['DEBUG'] = True
 app.config['MONGO_URI'] = os.environ['MONGO_URI']
@@ -40,7 +40,7 @@ def apihome():
 @app.route("/api/cities/", defaults={'state': 'OR'})
 @app.route("/api/cities/<state>/", methods=['GET', 'POST'])
 def cityData(state):
-    stateCitiesList = dumps(citiesCollection.find({'State': state}, {'_id': 0}))
+    stateCitiesList = list(citiesCollection.find({'State': state}, {'_id': 0}))
     return json.dumps(stateCitiesList, default=json_util.default)
 
 # API endpoint for states' aggregated data.
