@@ -108,15 +108,15 @@ function miMarkerColor(medianIncome) {
 
 function arMarkerColor(accessRate) {
     switch (true) {
-      case accessRate > 100000 : return ('#3f007d');
-      case accessRate > 90000 : return ('#54278f');
-      case accessRate > 80000 : return ('#6a51a3');
-      case accessRate > 70000 : return ('#807dba');
-      case accessRate > 60000 : return ('#9e9ac8');
-      case accessRate > 50000 : return ('#bcbddc');
-      case accessRate > 40000 : return ('#dadaeb');
-      case accessRate > 30000 : return ('#efedf5');
-      case accessRate > 20000 : return ('#fcfbfd');
+      case accessRate > .9 : return ('#3f007d');
+      case accessRate > .8 : return ('#54278f');
+      case accessRate > .7 : return ('#6a51a3');
+      case accessRate > .6 : return ('#807dba');
+      case accessRate > .5 : return ('#9e9ac8');
+      case accessRate > .4 : return ('#bcbddc');
+      case accessRate > .3 : return ('#dadaeb');
+      case accessRate > .2 : return ('#efedf5');
+      case accessRate > .1 : return ('#fcfbfd');
       default : return ('#ffffff');
     }
 };
