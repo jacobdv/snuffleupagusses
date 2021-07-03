@@ -1,6 +1,6 @@
 // All files.
-const cityLink = 'http://127.0.0.1:5000/api/cities/'
-const stateLink = 'http://127.0.0.1:5000/api/states/'
+const cityLink = 'https://high-speed-internet.herokuapp.com/api/cities/'
+const stateLink = 'https://high-speed-internet.herokuapp.com/api/states/'
 
 // Map.
 const mapCenter = [39.8283, -98.5795];

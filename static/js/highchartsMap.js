@@ -1,5 +1,5 @@
 // Addding in Highcart stacked bar chart
-d3.json('http://127.0.0.1:5000/api/states/').then((stateData) => {
+d3.json('https://high-speed-internet.herokuapp.com/api/states/').then((stateData) => {
     
     // Pull the data we need from out endpoint
     let states = stateData.map(d => d.state)

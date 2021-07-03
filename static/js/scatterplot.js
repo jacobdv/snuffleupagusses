@@ -143,7 +143,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
             // Demographics part.
             // demoPanel.append('h3').text(`All States`)
         } else {
-            d3.json(`http://127.0.0.1:5000/api/cities/${selectedRegion}/`).then(data => {
+            d3.json(`https://high-speed-internet.herokuapp.com/api/cities/${selectedRegion}/`).then(data => {
                 dataset = data;
                 circlesGroup = transitionOut(circlesGroup);
                 removeCircles(circlesGroup);
