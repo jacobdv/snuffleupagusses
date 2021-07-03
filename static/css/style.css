@@ -91,21 +91,21 @@ span {
     margin: 0;
     padding: 0;
 }
-.legendLabels {
+.snufLegendLabels {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
-#legend {
+#snufLegend {
     margin-top: 30px;
     margin-bottom: 30px;
 }
-.legendLabels p {
+.snufLegendLabels p {
     padding: 0;
     margin: 0 0 0 80px;
     color: black;
 }
-.legendLabels li {
+.snufLegendLabels li {
     height: 30px;
 }
 .units {
@@ -113,10 +113,10 @@ span {
     padding: 0;
     margin: 0;
 }
-.legendThird h5 {
+.snufLegendThird h5 {
     margin: 0;
     padding: 0;
 }
-.legendText {
+.snufLegendText {
     color: black;
 }
