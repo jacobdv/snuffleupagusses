@@ -83,7 +83,7 @@ html {
 }
 
 /* Legend */
-span {
+/* span {
     position: absolute;
     float: left;
     height: 30px;
@@ -119,4 +119,4 @@ span {
 }
 .snufLegendText {
     color: black;
-}
+} */

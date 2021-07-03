@@ -273,7 +273,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               radius: markerRadiusOneState(cityObject.properties.population)
             });
             arNewCity.addTo(layers.AccessRate);
-            arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate).toFixed(2)) * 100}%`);
+            arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate) * 100).toFixed(2)}%`);
           }
         })
       });
