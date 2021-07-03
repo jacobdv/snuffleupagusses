@@ -97,7 +97,7 @@ html {
     padding: 0;
 }
 #snufLegend {
-    margin-top: 30px;
+    margin-top: 15px;
     margin-bottom: 30px;
 }
 .snufLegendLabels p {
@@ -119,4 +119,5 @@ html {
 }
 .snufLegendText {
     color: black;
+    margin-top: 15px;
 }

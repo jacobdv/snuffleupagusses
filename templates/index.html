@@ -145,8 +145,12 @@
             </div>
             <div class='row'>
                 <h3 class='snufLegendText'>Circle Radius Legend</h3>
-                <p class='snufLegendText'>For both the national map and individual state maps, circle radius is based on the population of a city. At the national level the radii are larger to create 
-                    a clearer visualization. 
+                <p class='snufLegendText'>
+                    For the national map, the circle radii are determined by taking the square root of a city's population and multiplying it by 100. 
+                    This maintains the relative scaling of cities with different populations while reducing the cluttered feel 
+                    that is present on the map with larger city radii.<br><br>The same principle is applied to individual state 
+                    maps, though on a smaller scale. The square root of a city's population is multiplied only by 50 to compensate 
+                    for the smaller scale.
                 </p>
             </div>
         </div>
