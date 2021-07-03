@@ -119,5 +119,7 @@ html {
 }
 .snufLegendText {
     color: black;
+}
+#snufLegendTextRow {
     margin-top: 15px;
 }
