@@ -93,11 +93,11 @@ function hsiMarkerColor(population) {
 
 // Function for MedianIncome marker radius.
 function miMarkerRadius(medianIncome) {
-  return (Math.sqrt(medianIncome) * 150)
+  return (Math.sqrt(medianIncome) * 100)
 };
 
 function miMarkerRadiusOneState(medianIncome) {
-  return (Math.sqrt(medianIncome) * 75)
+  return (Math.sqrt(medianIncome) * 50)
 };
 
 function miMarkerColor(medianIncome) {
@@ -117,11 +117,11 @@ function miMarkerColor(medianIncome) {
 
 // Function for AccessRate marker radius.
 function arMarkerRadius(accessRate) {
-  return (accessRate * 45000)
+  return (accessRate * 100)
 };
 
 function arMarkerRadiusOneState(accessRate) {
-  return (accessRate * 22500)
+  return (accessRate * 50)
 };
 
 function arMarkerColor(accessRate) {
