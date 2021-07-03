@@ -7,7 +7,6 @@ import pymongo
 
 import os
 
-
 # Additional tools for API routes.
 import json
 from bson import json_util
@@ -31,6 +30,11 @@ statesCollection = db['States']
 @app.route("/")
 def index():
     return render_template("index.html")
+
+# API endpoint for api.html content.
+@app.route("/api")
+def apihome():
+    return render_template("api.html")
 
 # API endpoint for cities in an individual state, defaulting to Oregon.
 @app.route("/api/cities/", defaults={'state': 'OR'})

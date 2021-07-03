@@ -1,0 +1,63 @@
+body {
+    background-color: rgb(213, 237, 251);
+    margin-bottom: 2em;
+}
+
+h1 {
+    text-align: center;
+    margin: .5em;
+}
+
+h3 {
+    text-align: center;
+}
+
+h5 {
+    text-align: center;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+    margin-top: 1em;
+}
+
+.analysis {
+    text-align: center;
+    margin-left: 7em;
+    margin-right: 7em;
+    margin-bottom: 2em;
+}
+
+.row {
+    margin: 1em;
+}
+
+hr {
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+  }
+
+  .endpoint {
+      background-color: white;
+      text-align: center;
+      padding: 7px;
+      margin-top: .5em;
+      margin-left: 5em;
+      margin-right: 5em;
+  }
+
+  @media (max-width: 991px) {
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 70%;
+      }
+
+  }
