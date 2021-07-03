@@ -42,7 +42,7 @@ def apihome():
 @app.route("/api/cities/<state>/", methods=['GET', 'POST'])
 def cityData(state):
     stateCitiesList = dumps(citiesCollection.find({'State': state}, {'_id': 0}))
-    return stateCitiesList
+    return json.dumps(stateCitiesList, default=json_util.default)
 
 # API endpoint for states' aggregated data.
 @app.route("/api/states/", methods=['GET'])
