@@ -1,4 +1,3 @@
-console.log(API_KEY)
 // Setting up light and dark map layers.
 // Light
 const lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
