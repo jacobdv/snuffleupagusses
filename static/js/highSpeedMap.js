@@ -68,11 +68,11 @@ const usCitiesGeoJSON = {
 };
 
 // Function for HighSpeedInternet marker radius.
-function hsiMarkerRadius(population) {
+function markerRadius(population) {
   return (Math.sqrt(population) * 100)
 };
 
-function hsiMarkerRadiusOneState(population) {
+function markerRadiusOneState(population) {
   return (Math.sqrt(population) * 50)
 };
 
@@ -91,15 +91,6 @@ function hsiMarkerColor(population) {
     }
 };
 
-// Function for MedianIncome marker radius.
-function miMarkerRadius(medianIncome) {
-  return (Math.sqrt(medianIncome) * 100)
-};
-
-function miMarkerRadiusOneState(medianIncome) {
-  return (Math.sqrt(medianIncome) * 50)
-};
-
 function miMarkerColor(medianIncome) {
     switch (true) {
       case medianIncome > 100000 : return ('#7f0000');
@@ -113,15 +104,6 @@ function miMarkerColor(medianIncome) {
       case medianIncome > 20000 : return ('#fff7ec');
       default : return ('#ffffff');
     }
-};
-
-// Function for AccessRate marker radius.
-function arMarkerRadius(accessRate) {
-  return (accessRate * 100)
-};
-
-function arMarkerRadiusOneState(accessRate) {
-  return (accessRate * 50)
 };
 
 function arMarkerColor(accessRate) {
@@ -161,10 +143,14 @@ function getCoords(state) {
 Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesData]) => {
     // Adding dropdown content.
     let mapDropdown = d3.select('#mapDataset');
+    let stateArray;
     statesData.forEach(state => {
+      stateArray.push(state.state);
+    });
+    stateArray.sort();
+    stateArray.forEach(state => {
       mapDropdown.append('option').text(state.state).attr('value',state.state);
     });
-
 
     //////////////////////////
 
@@ -196,7 +182,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
-                  radius: hsiMarkerRadius(usCityObject.properties.population)
+                  radius: markerRadius(usCityObject.properties.population)
                 });
                 hsiNewCity.addTo(layers.HighSpeedAccess);
                 hsiNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
@@ -206,7 +192,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: miMarkerColor(usCityObject.properties.medianIncome),
-                  radius: miMarkerRadius(usCityObject.properties.population)
+                  radius: markerRadius(usCityObject.properties.population)
                 });
                 miNewCity.addTo(layers.MedianIncome);
                 miNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: $${(usCityObject.properties.medianIncome).toFixed(2)}`);
@@ -217,7 +203,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: arMarkerColor(usCityObject.properties.accessRate),
-                  radius: arMarkerRadius(usCityObject.properties.population)
+                  radius: markerRadius(usCityObject.properties.population)
                 });
                 arNewCity.addTo(layers.AccessRate);
                 arNewCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
@@ -263,7 +249,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               color: 'black',
               weight: 0.5,
               fillColor: hsiMarkerColor(cityObject.properties.highSpeed),
-              radius: hsiMarkerRadiusOneState(cityObject.properties.population)
+              radius: markerRadiusOneState(cityObject.properties.population)
             });
             hsiNewCity.addTo(layers.HighSpeedAccess);
             hsiNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${cityObject.properties.highSpeed}`);
@@ -273,7 +259,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               color: 'black',
               weight: 0.5,
               fillColor: miMarkerColor(cityObject.properties.medianIncome),
-              radius: miMarkerRadiusOneState(cityObject.properties.population)
+              radius: markerRadiusOneState(cityObject.properties.population)
             });
             miNewCity.addTo(layers.MedianIncome);
             miNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: $${(cityObject.properties.medianIncome).toFixed(2)}`);
@@ -284,7 +270,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
               color: 'black',
               weight: 0.5,
               fillColor: arMarkerColor(cityObject.properties.accessRate),
-              radius: arMarkerRadiusOneState(cityObject.properties.population)
+              radius: markerRadiusOneState(cityObject.properties.population)
             });
             arNewCity.addTo(layers.AccessRate);
             arNewCity.bindPopup(`<strong>${cityObject.properties.name}</strong>: ${((cityObject.properties.accessRate).toFixed(2)) * 100}%`);
@@ -321,7 +307,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: hsiMarkerColor(usCityObject.properties.highSpeed),
-                  radius: hsiMarkerRadius(usCityObject.properties.population)
+                  radius: markerRadius(usCityObject.properties.population)
                 });
                 hsiNewBigCity.addTo(layers.HighSpeedAccess);
                 hsiNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${usCityObject.properties.highSpeed}`);
@@ -331,7 +317,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: miMarkerColor(usCityObject.properties.medianIncome),
-                  radius: miMarkerRadius(usCityObject.properties.population)
+                  radius: markerRadius(usCityObject.properties.population)
                 });
                 miNewBigCity.addTo(layers.MedianIncome);
                 miNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: $${(usCityObject.properties.medianIncome.toFixed(2))}`);
@@ -342,7 +328,7 @@ Promise.all([d3.json(cityLink), d3.json(stateLink)]).then(([citiesData, statesDa
                   color: 'black',
                   weight: 0.5,
                   fillColor: arMarkerColor(usCityObject.properties.accessRate),
-                  radius: arMarkerRadius(usCityObject.properties.population)
+                  radius: markerRadius(usCityObject.properties.population)
                 });
                 arNewBigCity.addTo(layers.AccessRate);
                 arNewBigCity.bindPopup(`<strong>${usCityObject.properties.name}</strong>: ${((usCityObject.properties.accessRate).toFixed(2)) * 100}%`);
