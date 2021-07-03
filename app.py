@@ -24,6 +24,9 @@ app.config['MONGO_URI'] = os.environ['MONGO_URI']
 mongo = PyMongo(app)
 citiesCollection = db['Cities']
 statesCollection = db['States']
+print(db)
+print(citiesCollection)
+print(statesCollection)
 
 # Home route that displays index.html content.
 @app.route("/")
