@@ -17,11 +17,10 @@ app = Flask(__name__)
 CORS(app)
 
 # Connections to both collections in MongoDB.
-atlasPW = os.environ['atlasPW']
-client = pymongo.MongoClient(f'mongodb+srv://readonly:{atlasPW}@cluster0.6oig2.mongodb.net/test?authSource=admin&replicaSet=atlas-aont1m-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true')
+client = pymongo.MongoClient(os.environ['MONGO_URI'])
 db = client['Census_Data']
 app.config['DEBUG'] = True
-app.config['MONGO_URI'] = f'mongodb+srv://readonly:{atlasPW}@cluster0.6oig2.mongodb.net/test?authSource=admin&replicaSet=atlas-aont1m-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true'
+app.config['MONGO_URI'] = os.environ['MONGO_URI']
 mongo = PyMongo(app)
 citiesCollection = db['Cities']
 statesCollection = db['States']
@@ -49,7 +48,7 @@ def cityData(state):
 def stateData():
     # Creates a list from the collection and uses json_util to return this result.
     statesList = list(statesCollection.find())
-    return json.dumps(statesList, default = json_util.default)
+    return json.dumps(statesList, default=json_util.default)
 
 # Do the thing. (:
 if __name__ == "__main__":
