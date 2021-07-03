@@ -1,3 +1,5 @@
+const API_KEY = process.env.API_KEY
+const mapQuestKey = process.env.mapQuestKey
 // Setting up light and dark map layers.
 // Light
 const lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -6,7 +8,7 @@ const lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x
     maxZoom: 18,
     zoomOffset: -1,
     id: "mapbox/light-v10",
-    accessToken: process.env.API_KEY
+    accessToken: API_KEY
 });
 // Dark
 const darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
